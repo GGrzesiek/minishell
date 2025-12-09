@@ -37,6 +37,6 @@ fclean: clean
 re: fclean all
 
 lib_make:
-	make -C $(LIB_DIR) > /dev/null 2>&1
+	make bonus -C $(LIB_DIR) > /dev/null 2>&1
 
 .PHONY: all clean fclean re test lib_make
