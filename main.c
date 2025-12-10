@@ -17,7 +17,7 @@ int main(int argc, char **argv, char **envp)
     line = readline("mini(s)hell> ");
 
     if(!line)
-      end(&shell, "line malloc error");
+      end(&shell, "readline error\n");
 
     if(*line)
       add_history(line);
