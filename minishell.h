@@ -22,4 +22,27 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+typedef struct s_command
+{
+  char *command; // full command
+  char **args;
+  char *path; // detected path of the command
+  char *name;
+} t_command;
+
+typedef struct s_data
+{
+  int argc;
+  char **argv;
+  char **envp;
+  char **env_path; // processed paths from envp
+} t_data;
+
+
+// execute a command, with given arguments and STDIN_FILENO content. Returns the STDOUT_FILENO output of the command.
+char *execute_command(char *command, char **args, char *ioinput);
+
+void write_all(int fd, char *content);
+char *read_all(int fd);
+
 #endif

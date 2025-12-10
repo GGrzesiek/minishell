@@ -3,6 +3,9 @@
 
 int main(int argc, char **argv, char **envp)
 {
+  static t_data data;
+
+  (void) data;
   (void) argc;
   (void) argv;
   (void) envp;
