@@ -3,6 +3,9 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS = \
 	main.c \
+	init.c \
+	signals.c \
+	utils.c
 
 OBJS = $(SRCS:.c=.o)
 OBJ_PATHS = $(addprefix $(OBJS_DIR)/, $(OBJS))
@@ -21,7 +24,7 @@ mkdirs:
 	$(CC) $(CFLAGS) -I./$(LIB_DIR) -c $< -o $(OBJS_DIR)/$@ 
 
 $(NAME): lib_make
-	$(CC) $(CFLAGS) $(OBJ_PATHS) $(LIB_DIR)/libft.a -o $(NAME) -lbsd
+	$(CC) $(CFLAGS) $(OBJ_PATHS) $(LIB_DIR)/libft.a -o $(NAME) -lbsd -lreadline
 
 test: 
 	./$(NAME)
