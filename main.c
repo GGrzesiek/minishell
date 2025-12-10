@@ -17,21 +17,16 @@ int main(int argc, char **argv, char **envp)
     line = readline("mini(s)hell> ");
 
     if(!line)
-    {
-      printf("exit\n");
-      break;
-    }
+      end(&shell, "line malloc error");
 
     if(*line)
       add_history(line);
     
-    if(ft_strncmp(line, "exit",5) == 0)
+    if(ft_strncmp(line, "exit", 5) == 0)
     {
       free(line);
       break;
     }
   }
-  
-  cleanup_shell(&shell);
-  return(shell.exit_code);
+  end(&shell, NULL);
 }

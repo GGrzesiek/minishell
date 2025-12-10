@@ -4,16 +4,18 @@
 static t_env	*new_env_node(char *str)
 {
 	t_env	*node;
+  char *sub;
 	int	i;
 
-	node = malloc(sizeof(t_env));
+	node = (t_env *) malloc(sizeof(t_env));
 	if(!node)
 		return(NULL);
 	i=0;
 	while(str[i] && str[i] != '=')
 		i++;
-	if(ft_substr(str,0,i) != NULL)
-		node->key = ft_substr(str,0,i);
+  sub = ft_substr(str,0,i);
+	if(sub != NULL)
+		node->key = sub;
 	if(str[i] == '=')
 		node->value = ft_strdup(str + i + 1);
 	else
@@ -21,6 +23,7 @@ static t_env	*new_env_node(char *str)
 	node->next = NULL;
 	return(node);
 }
+
 static void	env_add_back(t_env **head, t_env *new_node)
 {
 	t_env *curr;
@@ -37,9 +40,11 @@ static void	env_add_back(t_env **head, t_env *new_node)
 		curr = curr->next;
 	curr->next = new_node;
 }
+
 void init_env_list(t_shell *shell,char **envp)
 {
 	int	i;
+  t_env *new_node;
 
 	shell->env_list = NULL;
 	if(!envp || !*envp)
@@ -48,7 +53,10 @@ void init_env_list(t_shell *shell,char **envp)
 	i = 0;
 	while(envp[i])
 	{
-		env_add_back(&shell->env_list, new_env_node(envp[i]));
+    new_node = new_env_node(envp[i]);
+    if (!new_node)
+      end(shell, "envp new node malloc error");
+		env_add_back(&shell->env_list, new_node);
 		i++;
 	}
 }

@@ -1,8 +1,10 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 SRCS = \
 	main.c \
+	mem_utils.c \
+	executor.c \
 	init.c \
 	signals.c \
 	utils.c
