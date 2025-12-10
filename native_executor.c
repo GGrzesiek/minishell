@@ -20,6 +20,8 @@ static void run_child(t_shell *shell, int *in, int *out, t_cmd *cmd)
     end(shell, "out dup2 fail\n");
   close(out[1]);
   execve(cmd->path, cmd->args, shell->envp);
+  perror("");
+  end(shell, "");
 }
 
 static char *run_parent(t_shell *shell, int *in, int *out)

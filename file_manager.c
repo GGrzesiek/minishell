@@ -9,6 +9,15 @@ void write_all(t_shell *shell, int fd, char *content)
   close(fd);
 }
 
+/* TODO make sure it works with relative paths and directory changes, same for write */
+// char *open_all(t_shell *shell, char *path)
+// {
+//   int fd;
+  
+//   fd = open(path, "O_RDONLY");
+//   return (read_all(shell, fd));
+// }
+
 char *read_all(t_shell *shell, int fd)
 {
   int bread;

@@ -80,9 +80,6 @@ void	setup_signals(void);
 void  end(t_shell *shell, char *msg);
 void  free_split(char **sp);
 
-/* Finds the command on the path, and initializes cmd->path for execution */
-void validate_command(t_shell *shell, t_cmd *cmd);
-
 /* execute a command, with given arguments and STDIN_FILENO content. Returns the STDOUT_FILENO output of the command. */
 char *execute_command(t_shell *shell, t_cmd *cmd, char *input);
 
