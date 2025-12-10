@@ -72,4 +72,10 @@ void	init_shell(t_shell *shell, char **envp);
 void	cleanup_shell(t_shell *shell);
 void	setup_signals(void);
 
+// execute a command, with given arguments and STDIN_FILENO content. Returns the STDOUT_FILENO output of the command.
+char *execute_command(t_cmd *cmd, char *ioinput);
+
+void write_all(int fd, char *content);
+char *read_all(int fd);
+
 #endif
