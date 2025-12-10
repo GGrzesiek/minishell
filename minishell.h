@@ -64,6 +64,7 @@ typedef struct s_cmd
 typedef struct s_shell
 {
 	t_env	*env_list;
+  char **paths;
 	int		exit_code;
 	t_cmd	*cmds;
 }	t_shell;
