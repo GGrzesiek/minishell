@@ -21,5 +21,55 @@
 #include <term.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "libft/libft.h"
+
+typedef enum e_token_type
+{
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_REDIR_APPEND,
+	TOKEN_REDIR_HEREDOC,
+}	t_token_type;
+
+typedef struct s_env
+{
+	char *key;
+	char *value;
+	struct s_env *next;	
+}	t_env;
+
+typedef struct s_token
+{
+	t_token_type	type;
+	char			*value;
+	struct s_token	*next;
+}	t_token;
+
+typedef struct s_redir
+{
+	t_token_type	type;
+	char			*file;
+	struct s_redir	*next;
+}	t_redir;
+
+typedef struct s_cmd
+{
+	char			**args;
+	t_redir			*redirs;
+	struct s_cmd	*next;
+}	t_cmd;
+
+typedef struct s_shell
+{
+	t_env	*env_list;
+	int		exit_code;
+	t_cmd	*cmds;
+}	t_shell;
+
+void	init_shell(t_shell *shell, char **envp);
+void	cleanup_shell(t_shell *shell);
+void	setup_signals(void);
 
 #endif
