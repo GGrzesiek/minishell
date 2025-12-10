@@ -56,8 +56,7 @@ typedef struct s_redir
 
 typedef struct s_cmd
 {
-  char			*name;
-	char			**args;
+	char			**args; // first arg is the name
   char			*path;
 	t_redir			*redirs;
 	struct s_cmd	*next;
@@ -65,6 +64,9 @@ typedef struct s_cmd
 
 typedef struct s_shell
 {
+  int argc;
+  char **argv;
+  char **envp;
 	t_env	*env_list;
   char **paths;
 	int		exit_code;
@@ -78,12 +80,15 @@ void	setup_signals(void);
 void end(t_shell *shell, char *msg);
 
 /* Finds the command on the path, and initializes cmd->path for execution */
-void validate_command(t_shell *shell, t_cmd *cmd)
+void validate_command(t_shell *shell, t_cmd *cmd);
 
 /* execute a command, with given arguments and STDIN_FILENO content. Returns the STDOUT_FILENO output of the command. */
-char *execute_command(t_shell *shell, t_cmd *cmd, char *stdinput);
+char *execute_command(t_shell *shell, t_cmd *cmd, char *input);
 
-void write_all(int fd, char *content);
-char *read_all(int fd);
+void write_all(t_shell *shell, int fd, char *content);
+char *read_all(t_shell *shell, int fd);
+
+/*TESTING*/
+t_cmd *init_single_cmd(t_shell *shell, char *line);
 
 #endif

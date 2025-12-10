@@ -1,7 +1,9 @@
 #include "minishell.h"
 
-void write_all(int fd, char *content)
+void write_all(t_shell *shell, int fd, char *content)
 {
+  if (fd < 0)
+    end(shell, "invalid fd\n");
   write(fd, content, ft_strlen(content));
   close(fd);
 }
@@ -14,7 +16,7 @@ char *read_all(t_shell *shell, int fd)
   char *tmp;
 
   if (fd < 0)
-    end(data, "invalid fd\n");
+    end(shell, "invalid fd\n");
   bread = 1;
   content = NULL;
   while(bread > 0)
