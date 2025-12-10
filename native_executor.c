@@ -21,7 +21,7 @@ static void run_child(t_shell *shell, int *in, int *out, t_cmd *cmd)
   close(out[1]);
   execve(cmd->path, cmd->args, shell->envp);
   perror("");
-  end(shell, "");
+  exit(1);
 }
 
 static char *run_parent(t_shell *shell, int *in, int *out)

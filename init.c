@@ -41,13 +41,18 @@ static void	env_add_back(t_env **head, t_env *new_node)
 	curr->next = new_node;
 }
 
-static void init_path(t_shell *shell, char *path)
+static void init_path(t_shell *shell)
 {
   int i;
   char **paths;
+  char *raw;
   char *tmp;
 
-  paths = ft_split(path, ':');
+  raw = getenv("PATH");
+  printf("[%s]", raw);
+  if (!raw)
+    end(shell, "path not found\n");
+  paths = ft_split(raw, ':');
   if (!paths)
     end(shell, "paths malloc error\n");
   i = 0;
@@ -76,8 +81,6 @@ void init_env_list(t_shell *shell, char **envp)
     new_node = new_env_node(envp[i]);
     if (!new_node)
       end(shell, "envp new node malloc error\n");
-    if (strncmp(new_node->key, "PATH", 5) == 0)
-      init_path(shell, new_node->value);
 		env_add_back(&shell->env_list, new_node);
 		i++;
 	}
@@ -89,6 +92,8 @@ void init_shell(t_shell *shell, char **envp)
 	shell->exit_code = 0;
 	shell->cmds = NULL;
   shell->paths = NULL;
+  
+  init_path(shell);
 	init_env_list(shell, envp);
   if (!shell->paths)
     end(shell, "paths not initialized\n");

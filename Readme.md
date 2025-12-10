@@ -15,11 +15,22 @@ access, fork, execve, dup, dup2, pipe,
 wait, waitpid, wait3, wait4, signal,
 sigaction, sigemptyset, sigaddset, 
 
-// others
+// command history
 readline, rl_clear_history, rl_on_new_line,
 rl_replace_line, rl_redisplay, add_history,
 
-getcwd, chdir, stat, lstat, fstat, unlink,  opendir, readdir, closedir, strerror, perror, isatty, ttyname, ttyslot, ioctl, getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+// directory management
+getcwd, chdir, 
+
+// file management
+stat, lstat, fstat, unlink, opendir, readdir, closedir, 
+
+// error management 
+strerror, perror, 
+
+// session management
+isatty, ttyname, ttyslot, ioctl, 
+getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
 - Command Execution
 - Environment variables
