@@ -23,7 +23,12 @@ int main(int argc, char **argv, char **envp)
       add_history(line);
 
     t_cmd *cmd = init_single_cmd(&shell, line);
-    execute_command(&shell, cmd, "");
+    char *out = execute_command(&shell, cmd, "");
+    printf("%s", out);
+    free(out);
+    free(cmd->path);
+    free_split(cmd->args);
+    free(cmd);
 
     if(ft_strncmp(line, "exit", 5) == 0)
     {

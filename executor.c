@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /*
-Finds the command on the path, and initializes cmd->path for execution
+Finds the command in the current dir, or on the path, and initializes cmd->path for execution
 */
 void validate_command(t_shell *shell, t_cmd *cmd)
 {
@@ -10,6 +10,7 @@ void validate_command(t_shell *shell, t_cmd *cmd)
   char *path;
   char *name = cmd->args[0];
 
+  path = NULL;
   if (access(name, X_OK) == 0)
   {
     path = ft_strjoin("./", name);
@@ -21,9 +22,7 @@ void validate_command(t_shell *shell, t_cmd *cmd)
     j = 0;
     while (paths[j])
     {
-      printf("[%s]", paths[j]);
       path = ft_strjoin(paths[j], name);
-      printf("[%s]", path);
       if(!path)
         end(shell, "command path malloc error\n");
       if (access(path, X_OK) == 0)

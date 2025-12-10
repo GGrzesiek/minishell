@@ -77,7 +77,8 @@ void	init_shell(t_shell *shell, char **envp);
 void	setup_signals(void);
 
 /* main funciton to free everything and end the program at any time */
-void end(t_shell *shell, char *msg);
+void  end(t_shell *shell, char *msg);
+void  free_split(char **sp);
 
 /* Finds the command on the path, and initializes cmd->path for execution */
 void validate_command(t_shell *shell, t_cmd *cmd);
