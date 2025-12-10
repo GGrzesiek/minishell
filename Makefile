@@ -5,6 +5,7 @@ SRCS = \
 	main.c \
 	file_manager.c \
 	mem_utils.c \
+	native_executor.c \
 	executor.c \
 	init.c \
 	signals.c \

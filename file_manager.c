@@ -4,7 +4,8 @@ void write_all(t_shell *shell, int fd, char *content)
 {
   if (fd < 0)
     end(shell, "invalid fd\n");
-  write(fd, content, ft_strlen(content));
+  if (content)
+    write(fd, content, ft_strlen(content));
   close(fd);
 }
 

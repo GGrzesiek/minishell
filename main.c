@@ -19,21 +19,22 @@ int main(int argc, char **argv, char **envp)
     if(!line)
       end(&shell, "readline error\n");
 
-    if(*line)
-      add_history(line);
-
-    t_cmd *cmd = init_single_cmd(&shell, line);
-    char *out = execute_command(&shell, cmd, "");
-    printf("%s", out);
-    free(out);
-    free(cmd->path);
-    free_split(cmd->args);
-    free(cmd);
-
     if(ft_strncmp(line, "exit", 5) == 0)
     {
       free(line);
       break;
+    }
+
+    if(*line)
+    {
+      add_history(line);
+
+      t_cmd *cmd = init_single_cmd(&shell, line);
+      char *out = execute_command(&shell, cmd, "");
+      printf("%s", out);
+      free(out);
+      free_split(cmd->args);
+      free(cmd);
     }
   }
   end(&shell, NULL);

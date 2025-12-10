@@ -86,6 +86,8 @@ void validate_command(t_shell *shell, t_cmd *cmd);
 /* execute a command, with given arguments and STDIN_FILENO content. Returns the STDOUT_FILENO output of the command. */
 char *execute_command(t_shell *shell, t_cmd *cmd, char *input);
 
+char *execute_native_command(t_shell *shell, t_cmd *cmd, char *input);
+
 void write_all(t_shell *shell, int fd, char *content);
 char *read_all(t_shell *shell, int fd);
 
