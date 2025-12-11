@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+extern int g_SHLVL;
+
 static char *validate_as_is(t_shell *shell, char *name)
 {
   char *path;
@@ -106,7 +108,9 @@ void execute_command(t_shell *shell, t_cmd *cmd, int in, int out)
       validate_command(shell, cmd);
       if(cmd->path)
       {
+        g_SHLVL++; 
         execute_native_command(shell, cmd, in, out);
+        g_SHLVL--;
         free(cmd->path);
       }
       else

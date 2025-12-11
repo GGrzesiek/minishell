@@ -5,8 +5,8 @@ t_env	*new_env_node(char *str)
 	t_env	*node;
   char *sub;
 	int	i;
-
-	node = (t_env *) malloc(sizeof(t_env));
+  
+ 	node = (t_env *) malloc(sizeof(t_env));
 	if(!node)
 		return(NULL);
 	i=0;
@@ -85,6 +85,7 @@ void	env_del(t_env **head, char *key)
     curr = curr->next; 
   }
 }
+
 
 char *env_get(t_env **head, char *key)
 {

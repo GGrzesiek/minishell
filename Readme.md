@@ -57,7 +57,7 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
 # Faza 4: "The Heavy Lifting" (Najtrudniejszy etap - 5-7 dni)
 [ ] Osoba A: Dopracowuje parser pod kątem dziwnych przypadków (np. echo "sdfsdf"'$USER' > plik). Przygotowuje listę komend dla potoków (linked list of commands).
-[ ] Osoba B: Implementuje Pipes (|). To wymaga pętli forkowania, gdzie wyjście jednego dziecka staje się wejściem drugiego. Musisz pilnować zamykania FD, żeby nie zawiesić programu (deadlock). Implementuje heredoc (<<).
+[ ] Osoba B: Implementuje Pipes (|). Implementuje heredoc (<<).
 
 # Faza 5: Czyszczenie i Edge Cases (Wspólnie - 3-4 dni)
 [ ] Memory Leaks: valgrind --leak-check=full. Pamiętajcie, że readline może cieknąć (jest to dozwolone), ale wasz kod nie może.
