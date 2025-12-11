@@ -109,7 +109,7 @@ void execute_command(t_shell *shell, t_cmd *cmd, int in, int out)
       if(cmd->path)
       {
         g_SHLVL++; 
-        execute_native_command(shell, cmd, in, out);
+        execute_native_command(shell, cmd);
         g_SHLVL--;
         free(cmd->path);
       }

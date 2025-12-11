@@ -121,12 +121,27 @@ char *env_get(t_env **head, char *key)
 
 void print_env(t_env **head)
 {
+  int pid;
   t_env *curr;
 
-  curr = *head;
-  while(curr)
+  pid = fork()
+  if (pid < 0)
+    end(shell, "fork failed\n");
+  else if (pid == 0)
   {
-    printf("%s=%s\n", curr->key, curr->value);
-    curr = curr->next; 
+    if (output_fd != STDOUT_FILENO)
+    {
+      if (dup2(output_fd, STDOUT_FILENO) == -1)
+        end(shell, "dup2 output fail");
+      close(output_fd);
+    }
+    curr = *head;
+    while(curr)
+    {
+      printf("%s=%s\n", curr->key, curr->value);
+      curr = curr->next; 
+    }
   }
+  else 
+    wait(0);
 }

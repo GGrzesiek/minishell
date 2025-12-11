@@ -56,8 +56,8 @@ typedef struct s_redir
 
 typedef struct s_cmd
 {
-	char			**args; // first arg is the name
-  char			*path; // only for use in the executor.c
+	char			**args;
+  char			*path;
 	t_redir			*redirs;
 	struct s_cmd	*next;
 }	t_cmd;
@@ -82,7 +82,7 @@ void  free_split(char **sp);
 
 void execute_command(t_shell *shell, t_cmd *cmd, int in, int out);
 /* executes the command with already parsed path */
-void execute_native_command(t_shell *shell, t_cmd *cmd, int in, int out);
+void execute_native_command(t_shell *shell, t_cmd *cmd);
 
 void write_all(t_shell *shell, int fd, char *content);
 char *read_all(t_shell *shell, int fd);
