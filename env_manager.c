@@ -50,6 +50,8 @@ void	env_add_back(t_env **head, t_env *new_node)
       return ;
     curr = curr->next; 
   }
+  if (ft_strncmp(curr->key, new_node->key, len) == 0)
+    return ;
 	curr->next = new_node;
 }
 
@@ -67,7 +69,7 @@ void	env_del(t_env **head, char *key)
   curr = *head;
   prev = NULL;
   len = ft_strlen(key);
-  while(curr->next)
+  while(curr)
   {
     if (ft_strncmp(curr->key, key, len) == 0)
     {
@@ -98,7 +100,7 @@ char *env_get(t_env **head, char *key)
     return (NULL);
   curr = *head;
   len = ft_strlen(key);
-  while(curr->next)
+  while(curr)
   {
     if (ft_strncmp(curr->key, key, len) == 0)      
       return (curr->value);
@@ -112,7 +114,7 @@ void print_env(t_env **head)
   t_env *curr;
 
   curr = *head;
-  while(curr->next)
+  while(curr)
   {
     printf("%s=%s\n", curr->key, curr->value);
     curr = curr->next; 

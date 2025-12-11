@@ -34,10 +34,7 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
 - Command Execution
 - Environment variables
-- SHLVL
 - Directory management
-- Signal Actions
-- Built-ins
 
 # Faza 1: Szkielet (Wspólnie - 1-2 dni)
 [v] Stworzenie repozytorium, Makefile i włączenie Libft.

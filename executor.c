@@ -79,14 +79,15 @@ void execute_command(t_shell *shell, t_cmd *cmd, int in, int out)
   {
     change_directory(shell, cmd->args[1]);
   }
-  else if (ft_strncmp("export", name, 6) == 0)
+  else if (ft_strncmp("export", name, 7) == 0)
   {
     new_node = new_env_node(cmd->args[1]);
     if (!new_node)
       end(shell, "envp new node malloc error\n");
 		env_add_back(&shell->env_list, new_node);
+    print_env(&shell->env_list);
   }
-  else if (ft_strncmp("unset", name, 5) == 0)
+  else if (ft_strncmp("unset", name, 6) == 0)
   {
     if (ft_strncmp("PATH", cmd->args[1], 5) == 0)
     {
