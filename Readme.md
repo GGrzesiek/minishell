@@ -34,6 +34,7 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
 - Command Execution
 - Environment variables
+- SHLVL
 - Directory management
 - Signal Actions
 - Built-ins

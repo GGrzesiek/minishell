@@ -20,7 +20,6 @@ static void run_child(t_shell *shell, t_cmd *cmd, int in, int out)
   exit(1);
 }
 
-
 void execute_native_command(t_shell *shell, t_cmd *cmd, int in, int out)
 {
   int pid;

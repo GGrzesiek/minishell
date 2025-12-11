@@ -57,7 +57,7 @@ typedef struct s_redir
 typedef struct s_cmd
 {
 	char			**args; // first arg is the name
-  char			*path; // only for use in the exector.c
+  char			*path; // only for use in the executor.c
 	t_redir			*redirs;
 	struct s_cmd	*next;
 }	t_cmd;
@@ -90,7 +90,6 @@ char *read_all(t_shell *shell, int fd);
 
 char *getcwdir(t_shell *shell);
 void change_directory(t_shell *shell, char *to);
-
 
 /*TESTING*/
 t_cmd *init_single_cmd(t_shell *shell, char *line);

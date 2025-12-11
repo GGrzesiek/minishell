@@ -15,4 +15,5 @@ void change_directory(t_shell *shell, char *to)
   if (!to)
     to = "/~";
   (void) shell;
+  chdir(to);
 }
