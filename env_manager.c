@@ -134,6 +134,7 @@ void print_env(t_shell *shell, t_env **head)
       printf("%s=%s\n", curr->key, curr->value);
       curr = curr->next; 
     }
+    end(shell, NULL);
   }
   else 
     wait(0);
