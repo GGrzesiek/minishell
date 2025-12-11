@@ -50,8 +50,10 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 [v] Osoba B: Pisze prosty executor, który potrafi uruchomić jedną komendę (bez pipe'ów), np. /bin/ls. Implementuje szukanie w PATH.
 
 # Faza 3: Integracja Logiki (Praca równoległa - 5-7 dni)
-[ ] Osoba A: Implementuje obsługę $? i zmiennych środowiskowych ($HOME itp.). Dodaje logikę export i unset.
-[ ] Osoba B: Implementuje przekierowania proste (<, >). Implementuje cd (zmienia katalog roboczy procesu) i pwd.
+[ ] Osoba A: Implementuje obsługę $? i zmiennych środowiskowych ($HOME itp.). 
+[v] Dodaje logikę export i unset.
+[ ] Osoba B: Implementuje przekierowania proste (<, >). 
+[v] Implementuje cd (zmienia katalog roboczy procesu) i pwd.
 
 # Faza 4: "The Heavy Lifting" (Najtrudniejszy etap - 5-7 dni)
 [ ] Osoba A: Dopracowuje parser pod kątem dziwnych przypadków (np. echo "sdfsdf"'$USER' > plik). Przygotowuje listę komend dla potoków (linked list of commands).

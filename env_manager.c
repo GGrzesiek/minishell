@@ -86,7 +86,6 @@ void	env_del(t_env **head, char *key)
   }
 }
 
-
 char *env_get(t_env **head, char *key)
 {
   size_t len;
