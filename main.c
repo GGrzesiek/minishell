@@ -30,9 +30,7 @@ int main(int argc, char **argv, char **envp)
       add_history(line);
 
       t_cmd *cmd = init_single_cmd(&shell, line);
-      char *out = execute_command(&shell, cmd, "");
-      printf("%s", out);
-      free(out);
+      execute_command(&shell, cmd, STDIN_FILENO, STDOUT_FILENO);
       free_split(cmd->args);
       free(cmd);
     }
