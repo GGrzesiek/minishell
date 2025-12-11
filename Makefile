@@ -3,7 +3,9 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 SRCS = \
 	main.c \
+	env_manager.c \
 	file_manager.c \
+	directory_manager.c \
 	mem_utils.c \
 	native_executor.c \
 	executor.c \
