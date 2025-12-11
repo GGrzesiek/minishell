@@ -58,6 +58,6 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
 # Faza 5: Czyszczenie i Edge Cases (Wspólnie - 3-4 dni)
 [ ] Memory Leaks: valgrind --leak-check=full. Pamiętajcie, że readline może cieknąć (jest to dozwolone), ale wasz kod nie może.
-[ ] Sygnały w procesach potomnych: Ctrl-C wewnątrz cat (blocking command) działa inaczej niż w prompcie. Tutaj przyda się ta jedna zmienna globalna.
+[v] Sygnały w procesach potomnych: Ctrl-C wewnątrz cat (blocking command) działa inaczej niż w prompcie. Tutaj przyda się ta jedna zmienna globalna.
 [ ] Testy: Porównujcie swoje wyniki z bash (nie zsh!). Sprawdźcie dziwne komendy, np. cat | cat | ls.
 

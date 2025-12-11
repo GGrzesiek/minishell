@@ -47,11 +47,21 @@ void	env_add_back(t_env **head, t_env *new_node)
 	while(curr->next)
   {
     if (ft_strncmp(curr->key, new_node->key, len) == 0)
-      return ;
+    {
+      free(new_node->key);
+      free(new_node->value);
+      free(new_node);
+      return;
+    }
     curr = curr->next; 
   }
   if (ft_strncmp(curr->key, new_node->key, len) == 0)
-    return ;
+  {
+    free(new_node->key);
+    free(new_node->value);
+    free(new_node);
+    return;
+  }
 	curr->next = new_node;
 }
 
