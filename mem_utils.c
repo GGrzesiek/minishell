@@ -6,6 +6,7 @@ void end(t_shell *shell, char *msg)
   t_env *tmp;
 
   // FREE ENV LIST
+  rl_clear_history();
   lst = shell->env_list;
   while (lst)
   {

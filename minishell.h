@@ -56,8 +56,8 @@ typedef struct s_redir
 
 typedef struct s_cmd
 {
-	char			**args; // first arg is the name
-  char			*path; // only for use in the exector.c
+	char			**args;
+  char			*path;
 	t_redir			*redirs;
 	struct s_cmd	*next;
 }	t_cmd;
@@ -80,10 +80,9 @@ void	setup_signals(void);
 void  end(t_shell *shell, char *msg);
 void  free_split(char **sp);
 
-
 void execute_command(t_shell *shell, t_cmd *cmd, int in, int out);
 /* executes the command with already parsed path */
-void execute_native_command(t_shell *shell, t_cmd *cmd, int in, int out);
+void execute_native_command(t_shell *shell, t_cmd *cmd);
 
 void write_all(t_shell *shell, int fd, char *content);
 char *read_all(t_shell *shell, int fd);
@@ -91,8 +90,14 @@ char *read_all(t_shell *shell, int fd);
 char *getcwdir(t_shell *shell);
 void change_directory(t_shell *shell, char *to);
 
-
 /*TESTING*/
 t_cmd *init_single_cmd(t_shell *shell, char *line);
+
+t_env	*new_env_node(char *str);
+void	env_add_back(t_env **head, t_env *new_node);
+void env_del(t_env **head, char *key);
+void init_path(t_shell *shell);
+char *env_get(t_env **head, char *key);
+void print_env(t_shell *shell, t_env **head);
 
 #endif

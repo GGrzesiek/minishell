@@ -1,6 +1,8 @@
 
 #include "minishell.h"
 
+int g_SHLVL = 0;
+
 int main(int argc, char **argv, char **envp)
 {
   t_shell shell;
@@ -16,14 +18,8 @@ int main(int argc, char **argv, char **envp)
   {
     line = readline("mini(s)hell> ");
 
-    if(!line)
-      end(&shell, "readline error\n");
-
-    if(ft_strncmp(line, "exit", 5) == 0)
-    {
-      free(line);
-      break;
-    }
+    if(!line) // Ctrl+D
+      end(&shell, NULL);
 
     if(*line)
     {
@@ -35,5 +31,4 @@ int main(int argc, char **argv, char **envp)
       free(cmd);
     }
   }
-  end(&shell, NULL);
 }

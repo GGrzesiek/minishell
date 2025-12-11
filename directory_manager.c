@@ -13,6 +13,10 @@ char *getcwdir(t_shell *shell)
 void change_directory(t_shell *shell, char *to)
 {
   if (!to)
-    to = "/~";
-  (void) shell;
+  {
+    to = env_get(&shell->env_list, "HOME");
+    if (!to)
+      return ;
+  }
+  chdir(to);
 }
