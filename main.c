@@ -19,12 +19,6 @@ int main(int argc, char **argv, char **envp)
     if(!line)
       end(&shell, "readline error\n");
 
-    if(ft_strncmp(line, "exit", 5) == 0)
-    {
-      free(line);
-      break;
-    }
-
     if(*line)
     {
       add_history(line);
@@ -35,5 +29,4 @@ int main(int argc, char **argv, char **envp)
       free(cmd);
     }
   }
-  end(&shell, NULL);
 }

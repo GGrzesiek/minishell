@@ -65,18 +65,52 @@ static void validate_command(t_shell *shell, t_cmd *cmd)
 
 void execute_command(t_shell *shell, t_cmd *cmd, int in, int out)
 {
-  if (ft_strlen(cmd->args[0]) == 2 && 
-      ft_strncmp("cd", cmd->args[0], 3) == 0)
+  char *name;
+  t_env *new_node;
+
+  name = cmd->args[0];
+  if(ft_strncmp("exit", name, 5) == 0)
+  {
+    end(shell, NULL);
+  }
+  else if (ft_strncmp("cd", name, 3) == 0)
   {
     change_directory(shell, cmd->args[1]);
   }
+  else if (ft_strncmp("export", name, 6) == 0)
+  {
+    new_node = new_env_node(cmd->args[1]);
+    if (!new_node)
+      end(shell, "envp new node malloc error\n");
+		env_add_back(&shell->env_list, new_node);
+  }
+  else if (ft_strncmp("unset", name, 5) == 0)
+  {
+    if (ft_strncmp("PATH", cmd->args[1], 5) == 0)
+    {
+      free_split(shell->paths);
+      shell->paths = NULL;
+    }
+    env_del(&shell->env_list, cmd->args[1]);
+  }
+  else if (ft_strncmp("env", name, 4) == 0)
+  {
+    print_env(&shell->env_list);
+  }
   else
   {
-    validate_command(shell, cmd);
-    if(cmd->path)
+    if (!shell->paths)
+      init_path(shell);
+    if (shell->paths)
     {
-      execute_native_command(shell, cmd, in, out);
-      free(cmd->path);
+      validate_command(shell, cmd);
+      if(cmd->path)
+      {
+        execute_native_command(shell, cmd, in, out);
+        free(cmd->path);
+      }
+      else
+        write_all(shell, STDOUT_FILENO, "Command not found\n");
     }
     else
       write_all(shell, STDOUT_FILENO, "Command not found\n");

@@ -80,7 +80,6 @@ void	setup_signals(void);
 void  end(t_shell *shell, char *msg);
 void  free_split(char **sp);
 
-
 void execute_command(t_shell *shell, t_cmd *cmd, int in, int out);
 /* executes the command with already parsed path */
 void execute_native_command(t_shell *shell, t_cmd *cmd, int in, int out);
@@ -93,5 +92,12 @@ void change_directory(t_shell *shell, char *to);
 
 /*TESTING*/
 t_cmd *init_single_cmd(t_shell *shell, char *line);
+
+t_env	*new_env_node(char *str);
+void	env_add_back(t_env **head, t_env *new_node);
+void env_del(t_env **head, char *key);
+void init_path(t_shell *shell);
+char *env_get(t_env **head, char *key);
+void print_env(t_env **head);
 
 #endif
