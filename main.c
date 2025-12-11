@@ -31,6 +31,7 @@ int main(int argc, char **argv, char **envp)
 
       t_cmd *cmd = init_single_cmd(&shell, line);
       char *out = execute_command(&shell, cmd, "");
+      printf("%s", out);
       free(out);
       free_split(cmd->args);
       free(cmd);

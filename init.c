@@ -49,7 +49,6 @@ static void init_path(t_shell *shell)
   char *tmp;
 
   raw = getenv("PATH");
-  printf("[%s]", raw);
   if (!raw)
     end(shell, "path not found\n");
   paths = ft_split(raw, ':');
