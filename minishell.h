@@ -56,14 +56,19 @@ typedef struct s_redir
 
 typedef struct s_cmd
 {
-	char			**args;
+	char			**args; // first arg is the name
+  char			*path;
 	t_redir			*redirs;
 	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_shell
 {
+  int argc;
+  char **argv;
+  char **envp;
 	t_env	*env_list;
+  char **paths;
 	int		exit_code;
 	t_cmd	*cmds;
 }	t_shell;
@@ -71,13 +76,19 @@ typedef struct s_shell
 void	init_shell(t_shell *shell, char **envp);
 void	setup_signals(void);
 
-/* main funciton to free everything and end the program at any time*/
-void end(t_shell *shell, char *msg);
+/* main funciton to free everything and end the program at any time */
+void  end(t_shell *shell, char *msg);
+void  free_split(char **sp);
 
-// execute a command, with given arguments and STDIN_FILENO content. Returns the STDOUT_FILENO output of the command.
-char *execute_command(t_cmd *cmd, char *stdinput);
+/* execute a command, with given arguments and STDIN_FILENO content. Returns the STDOUT_FILENO output of the command. */
+char *execute_command(t_shell *shell, t_cmd *cmd, char *input);
 
-void write_all(int fd, char *content);
-char *read_all(int fd);
+char *execute_native_command(t_shell *shell, t_cmd *cmd, char *input);
+
+void write_all(t_shell *shell, int fd, char *content);
+char *read_all(t_shell *shell, int fd);
+
+/*TESTING*/
+t_cmd *init_single_cmd(t_shell *shell, char *line);
 
 #endif
