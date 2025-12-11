@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-/* TODO, if needed assemble full path from relative (./) path, check access from cd */ 
 static char *validate_in_cd(t_shell *shell, char *name)
 {
   char *path;
@@ -12,7 +10,7 @@ static char *validate_in_cd(t_shell *shell, char *name)
     path = ft_strdup(name);
     if(!path)
       end(shell, "command path malloc error\n");
-  } 
+  }
   return(path);
 }
 
@@ -49,36 +47,38 @@ static void validate_command(t_shell *shell, t_cmd *cmd)
   path = NULL;
   name = cmd->args[0];
   if (ft_strlen(cmd->args[0]) >= 2 && 
-      ft_strncmp("./", cmd->args[0], 2) == 0)
+    ft_strncmp("./", cmd->args[0], 2) == 0)
+  {
     path = validate_in_cd(shell, name);
+  }
   else if(ft_strlen(cmd->args[0]) >= 1 && 
-      ft_strncmp("/", cmd->args[0], 1) == 0)
-      path = validate_in_cd(shell, name);
+    ft_strncmp("/", cmd->args[0], 1) == 0)
+  {
+    path = validate_in_cd(shell, name);
+  }
   else
+  {
     path = validate_in_paths(shell, name);
+  }
   cmd->path=path;
 }
 
-char *execute_command(t_shell *shell, t_cmd *cmd, char *input)
+void execute_command(t_shell *shell, t_cmd *cmd, int in, int out)
 {
-  char *output;
-
-  output = NULL;
   if (ft_strlen(cmd->args[0]) == 2 && 
       ft_strncmp("cd", cmd->args[0], 3) == 0)
   {
-    return ft_strdup("TODO Changing Directory\n");
+    change_directory(shell, cmd->args[1]);
   }
   else
   {
     validate_command(shell, cmd);
     if(cmd->path)
     {
-      output = execute_native_command(shell, cmd, input);
+      execute_native_command(shell, cmd, in, out);
       free(cmd->path);
     }
     else
-      output = ft_strdup("Command not found\n");
+      write_all(shell, STDOUT_FILENO, "Command not found\n");
   }
-  return (output);
 }

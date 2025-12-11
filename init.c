@@ -87,6 +87,7 @@ void init_env_list(t_shell *shell, char **envp)
 
 void init_shell(t_shell *shell, char **envp)
 {
+
   shell->envp = envp;
 	shell->exit_code = 0;
 	shell->cmds = NULL;
