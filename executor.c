@@ -65,13 +65,10 @@ static void validate_command(t_shell *shell, t_cmd *cmd)
   cmd->path=path;
 }
 
-void execute_command(t_shell *shell, t_cmd *cmd, int in, int out)
+void execute_command(t_shell *shell, t_cmd *cmd)
 {
   char *name;
   t_env *new_node;
-
-  (void) in;
-  (void) out;
 
   name = cmd->args[0];
   if(ft_strncmp("exit", name, 5) == 0)

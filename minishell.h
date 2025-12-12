@@ -80,7 +80,7 @@ void	setup_signals(void);
 void  end(t_shell *shell, char *msg);
 void  free_split(char **sp);
 
-void execute_command(t_shell *shell, t_cmd *cmd, int in, int out);
+void execute_command(t_shell *shell, t_cmd *cmd);
 /* executes the command with already parsed path */
 void execute_native_command(t_shell *shell, t_cmd *cmd);
 

@@ -26,7 +26,7 @@ int main(int argc, char **argv, char **envp)
       add_history(line);
 
       t_cmd *cmd = init_single_cmd(&shell, line);
-      execute_command(&shell, cmd, STDIN_FILENO, STDOUT_FILENO);
+      execute_command(&shell, cmd);
       free_split(cmd->args);
       free(cmd);
     }
