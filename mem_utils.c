@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+void	free_env(t_env *node)
+{
+	free(node->value);
+	free(node->key);
+	free(node);
+}
+
 void	end(t_shell *shell, char *msg)
 {
 	t_env	*lst;

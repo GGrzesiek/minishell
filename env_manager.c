@@ -23,59 +23,40 @@ t_env	*new_env_node(char *str)
 	return (node);
 }
 
-void	env_add_back(t_env **head, t_env *new_node)
+int	env_add_back(t_env **head, t_env *new_node)
 {
 	t_env	*curr;
 	size_t	len;
 
 	if (!head || !new_node)
-		return ;
+		return (1);
 	if (!new_node->key || !new_node->value)
-	{
-		free(new_node->value);
-		free(new_node->key);
-		free(new_node);
-		return ;
-	}
+		return (free_env(new_node), 1);
 	len = ft_strlen(new_node->key);
 	if (!*head)
-	{
-		*head = new_node;
-		return ;
-	}
+		return (*head = new_node, 0);
 	curr = *head;
 	while (curr->next)
 	{
 		if (ft_strncmp(curr->key, new_node->key, len) == 0)
-		{
-			free(new_node->key);
-			free(new_node->value);
-			free(new_node);
-			return ;
-		}
+			return (free_env(curr), 1);
 		curr = curr->next;
 	}
 	if (ft_strncmp(curr->key, new_node->key, len) == 0)
-	{
-		free(new_node->key);
-		free(new_node->value);
-		free(new_node);
-		return ;
-	}
+		return (free_env(curr), 1);
 	curr->next = new_node;
+	return (0);
 }
 
-void	env_del(t_env **head, char *key)
+int	env_del(t_env **head, char *key)
 {
 	size_t	len;
 	t_env	*curr;
 	t_env	*prev;
 	t_env	*tmp;
 
-	if (!head || !key || !*key)
-		return ;
-	if (!*head)
-		return ;
+	if (!head || !*head || !key || !*key)
+		return (1);
 	curr = *head;
 	prev = NULL;
 	len = ft_strlen(key);
@@ -88,14 +69,12 @@ void	env_del(t_env **head, char *key)
 				*head = curr->next;
 			else
 				prev->next = curr->next;
-			free(tmp->value);
-			free(tmp->key);
-			free(tmp);
-			return ;
+			return (free_env(tmp), 0);
 		}
 		prev = curr;
 		curr = curr->next;
 	}
+	return (1);
 }
 
 char	*env_get(t_env **head, char *key)

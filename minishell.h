@@ -96,11 +96,12 @@ void				print_env(t_shell *shell, t_env **head);
 char				*getcwdir(t_shell *shell);
 void				end(t_shell *shell, char *msg);
 void				free_split(char **sp);
+void free_env(t_env *node);
 
 /* Env variable manager */
 t_env				*new_env_node(char *str);
-void				env_add_back(t_env **head, t_env *new_node);
-void				env_del(t_env **head, char *key);
+int				env_add_back(t_env **head, t_env *new_node);
+int				env_del(t_env **head, char *key);
 char				*env_get(t_env **head, char *key);
 
 /*TESTING*/
