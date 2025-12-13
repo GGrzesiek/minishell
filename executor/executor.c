@@ -1,25 +1,38 @@
 #include "./../minishell.h"
 
+
+// if fd already exists from a pipe, close it and override
+void open_redir(t_shell *shell, t_cmd *cmd)
+{
+  (void) shell;
+  t_redir *redir;
+
+  redir = cmd->redirs;
+  while (redir)
+  {
+    if (redir->type == TOKEN_REDIR_IN)
+      {}
+    if (redir->type == TOKEN_REDIR_OUT)
+      {}
+    if (redir->type == TOKEN_REDIR_APPEND)
+      {}
+    if (redir->type == TOKEN_REDIR_HEREDOC)
+      {}
+  }
+}
+
 void execute_chain(t_shell *shell, t_cmd *cmd)
 {
-  t_redir *curr;
-
-  curr = cmd->redirs;
-  while(curr)
+  while (cmd)
   {
-    if (curr->type == TOKEN_REDIR_IN)
-      ;
-    if (curr->type == TOKEN_REDIR_OUT)
-      ;
-    if (curr->type == TOKEN_REDIR_APPEND)
-      ;
-    if (curr->type == TOKEN_REDIR_HEREDOC)
-      ;
+    if (cmd->next)
+    {
+      // open pipe
+    }
+    open_redir(shell, cmd);
+    execute_command(shell, cmd);
+    cmd=cmd->next;
   }
-  if (cmd->prev)
-    ;
-  if (cmd->next)
-    ;
 }
 
 void	execute_command(t_shell *shell, t_cmd *cmd)
