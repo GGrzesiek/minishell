@@ -3,12 +3,14 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 SRCS = \
 	main.c \
+	executor/cmd_validator.c \
+	executor/env_executor.c \
 	env_manager.c \
-	file_manager.c \
+	executor/file_manager.c \
 	directory_manager.c \
 	mem_utils.c \
-	native_executor.c \
-	executor.c \
+	executor/native_executor.c \
+	executor/executor.c \
 	init.c \
 	signals.c \
 	utils.c
@@ -25,6 +27,7 @@ compile: mkdirs $(OBJS)
 
 mkdirs:
 	mkdir -p $(OBJS_DIR)
+	mkdir -p $(OBJS_DIR)/executor
 
 %.o: %.c
 	$(CC) $(CFLAGS) -I./$(LIB_DIR) -c $< -o $(OBJS_DIR)/$@ 

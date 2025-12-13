@@ -117,25 +117,3 @@ char *env_get(t_env **head, char *key)
   }
   return(NULL);
 }
-
-void print_env(t_shell *shell, t_env **head)
-{
-  int pid;
-  t_env *curr;
-
-  pid = fork();
-  if (pid < 0)
-    end(shell, "fork failed\n");
-  else if (pid == 0)
-  {
-    curr = *head;
-    while(curr)
-    {
-      printf("%s=%s\n", curr->key, curr->value);
-      curr = curr->next; 
-    }
-    end(shell, NULL);
-  }
-  else 
-    wait(0);
-}

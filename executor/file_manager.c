@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "./../minishell.h"
 
 void write_all(t_shell *shell, int fd, char *content)
 {

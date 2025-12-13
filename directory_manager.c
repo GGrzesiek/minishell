@@ -10,8 +10,11 @@ char *getcwdir(t_shell *shell)
   return(buffer);
 }
 
-void change_directory(t_shell *shell, char *to)
+void change_directory(t_shell *shell, t_cmd *cmd)
 {
+  char *to;
+
+  to = cmd->args[1];
   if (!to)
   {
     to = env_get(&shell->env_list, "HOME");
