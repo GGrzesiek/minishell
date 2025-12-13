@@ -19,9 +19,7 @@ void	end(t_shell *shell, char *msg)
 	{
 		tmp = lst;
 		lst = lst->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
+		free_env(tmp);
 	}
 	free_split(shell->paths);
 	if (msg)

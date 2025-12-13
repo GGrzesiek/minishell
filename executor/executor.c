@@ -1,5 +1,27 @@
 #include "./../minishell.h"
 
+void execute_chain(t_shell *shell, t_cmd *cmd)
+{
+  t_redir *curr;
+
+  curr = cmd->redirs;
+  while(curr)
+  {
+    if (curr->type == TOKEN_REDIR_IN)
+      ;
+    if (curr->type == TOKEN_REDIR_OUT)
+      ;
+    if (curr->type == TOKEN_REDIR_APPEND)
+      ;
+    if (curr->type == TOKEN_REDIR_HEREDOC)
+      ;
+  }
+  if (cmd->prev)
+    ;
+  if (cmd->next)
+    ;
+}
+
 void	execute_command(t_shell *shell, t_cmd *cmd)
 {
 	char *name;

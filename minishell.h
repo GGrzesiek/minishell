@@ -58,6 +58,7 @@ typedef struct s_cmd
 {
 	char			**args;
 	char			*path;
+  int fdredir[2];
 	t_redir			*redirs;
 	struct s_cmd	*next;
 }					t_cmd;
