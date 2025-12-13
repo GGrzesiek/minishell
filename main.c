@@ -1,34 +1,34 @@
 
 #include "minishell.h"
 
-int g_SHLVL = 0;
+volatile int	g_SHLVL = 0;
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-  t_shell shell;
-  char *line;
+	t_shell shell;
+	char *line;
 
-  shell.argc = argc;
+	shell.argc = argc;
 	shell.argv = argv;
 
-  init_shell(&shell, envp);
-  setup_signals();
+	init_shell(&shell, envp);
+	setup_signals();
 
-  while (1)
-  {
-    line = readline("mini(s)hell> ");
+	while (1)
+	{
+		line = readline("mini(s)hell> ");
 
-    if(!line) // Ctrl+D
-      end(&shell, NULL);
+		if (!line) // Ctrl+D
+			end(&shell, NULL);
 
-    if(*line)
-    {
-      add_history(line);
+		if (*line)
+		{
+			add_history(line);
 
-      t_cmd *cmd = init_single_cmd(&shell, line);
-      execute_command(&shell, cmd);
-      free_split(cmd->args);
-      free(cmd);
-    }
-  }
+			t_cmd *cmd = init_single_cmd(&shell, line);
+			execute_command(&shell, cmd);
+			free_split(cmd->args);
+			free(cmd);
+		}
+	}
 }

@@ -7,7 +7,7 @@ SRCS = \
 	executor/env_executor.c \
 	env_manager.c \
 	executor/file_manager.c \
-	directory_manager.c \
+	executor/directory_manager.c \
 	mem_utils.c \
 	executor/native_executor.c \
 	executor/executor.c \
