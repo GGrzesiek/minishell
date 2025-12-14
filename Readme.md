@@ -47,7 +47,7 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # Faza 3: Integracja Logiki (Praca równoległa - 5-7 dni)
 [ ] Osoba A: Implementuje obsługę $? (replace as errno) i zmiennych środowiskowych ($HOME itp.). 
 [v] Dodaje logikę export i unset.
-[ ] Osoba B: Implementuje przekierowania proste (<, >). 
+[v] Osoba B: Implementuje przekierowania proste (<, >). 
 [v] Implementuje cd (zmienia katalog roboczy procesu) i pwd.
 
 # Faza 4: "The Heavy Lifting" (Najtrudniejszy etap - 5-7 dni)
@@ -58,7 +58,7 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # Faza 5: Czyszczenie i Edge Cases (Wspólnie - 3-4 dni)
 [ ] Memory Leaks: valgrind --leak-check=full. Pamiętajcie, że readline może cieknąć (jest to dozwolone), ale wasz kod nie może.
 [v] Sygnały w procesach potomnych: Ctrl-C wewnątrz cat (blocking command) działa inaczej niż w prompcie. Tutaj przyda się ta jedna zmienna globalna.
-[ ] Testy: Porównujcie swoje wyniki z bash (nie zsh!). Sprawdźcie dziwne komendy, np. cat | cat | ls.
+[] Testy: Porównujcie swoje wyniki z bash (nie zsh!). Sprawdźcie dziwne komendy, np. cat | cat | ls.
 
 # English Details
 - [v] Display a prompt when waiting for a new command.
