@@ -1,6 +1,6 @@
 #include "./../minishell.h"
 
-extern int	g_SHLVL;
+extern int g_SHLVL;
 
 static void	run_child(t_shell *shell, t_cmd *cmd)
 {

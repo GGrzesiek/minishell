@@ -2,7 +2,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
 # include "libft/libft.h"
 # include <curses.h>
 # include <dirent.h>
@@ -66,8 +65,6 @@ typedef struct s_cmd
 
 typedef struct s_shell
 {
-	int				argc;
-	char			**argv;
 	char			**envp;
 	t_env			*env_list;
 	char			**paths;
@@ -106,8 +103,5 @@ t_env				*new_env_node(char *str);
 int				env_add_back(t_env **head, t_env *new_node);
 int				env_del(t_env **head, char *key);
 char				*env_get(t_env **head, char *key);
-
-/*TESTING*/
-t_cmd				*init_single_cmd(t_shell *shell, char *line);
 
 #endif

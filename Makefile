@@ -1,8 +1,8 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
+MAIN = main.c
 SRCS = \
-	main.c \
 	executor/cmd_validator.c \
 	executor/env_executor.c \
 	env_manager.c \
@@ -15,15 +15,17 @@ SRCS = \
 	signals.c \
 	utils.c
 
+MOBJ = $(MAIN:.c=.o)
 OBJS = $(SRCS:.c=.o)
 OBJ_PATHS = $(addprefix $(OBJS_DIR)/, $(OBJS))
+MOBJ_PATH = $(addprefix $(OBJS_DIR)/, $(MOBJ))
 OBJS_DIR = ./objs
 
 LIB_DIR = libft
 
 all: compile $(NAME)
 
-compile: mkdirs $(OBJS)
+compile: mkdirs $(OBJS) $(MOBJ)
 
 mkdirs:
 	mkdir -p $(OBJS_DIR)
@@ -33,7 +35,11 @@ mkdirs:
 	$(CC) $(CFLAGS) -I./$(LIB_DIR) -c $< -o $(OBJS_DIR)/$@ 
 
 $(NAME): lib_make
-	$(CC) $(CFLAGS) $(OBJ_PATHS) $(LIB_DIR)/libft.a -o $(NAME) -lbsd -lreadline
+	$(CC) $(CFLAGS) $(OBJ_PATHS) $(MOBJ_PATH) $(LIB_DIR)/libft.a -o $(NAME) -lbsd -lreadline
+
+archive:
+	cp $(LIB_DIR)/libft.a $(NAME).a
+	ar rcs $(NAME).a $(OBJ_PATHS)
 
 test: 
 	./$(NAME)
@@ -44,7 +50,7 @@ clean:
 	rm -rf $(OBJS_DIR)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -rf $(NAME) $(NAME).a
 
 re: fclean all
 
