@@ -10,7 +10,10 @@ void	init_path(t_shell *shell)
 
 	raw = env_get(&shell->env_list, "PATH");
 	if (!raw)
+  {
+    shell->paths=NULL;
 		return ;
+  }
 	paths = ft_split(raw, ':');
 	if (!paths)
 		end(shell, "paths malloc error\n");

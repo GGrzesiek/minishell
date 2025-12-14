@@ -18,6 +18,8 @@ static void	run_child(t_shell *shell, t_cmd *cmd)
   }
 	execve(cmd->path, cmd->args, shell->envp);
 	perror(cmd->args[0]);
+  free(cmd->path);
+  end(shell, NULL);
 }
 
 void	execute_native_command(t_shell *shell, t_cmd *cmd)
@@ -39,10 +41,7 @@ void	execute_native_command(t_shell *shell, t_cmd *cmd)
 
 int	process_native_command(t_shell *shell, t_cmd *cmd)
 {
-	if (!shell->paths)
-		init_path(shell);
-	if (shell->paths)
-		validate_command(shell, cmd);
+  validate_command(shell, cmd);
 	if (cmd->path)
 	{
 		g_SHLVL++;
@@ -51,6 +50,6 @@ int	process_native_command(t_shell *shell, t_cmd *cmd)
 		free(cmd->path);
 	}
 	else
-		return (perror(cmd->args[0]), 1);
+    return (perror(cmd->args[0]), 1);
   return (0);
 }

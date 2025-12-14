@@ -1,9 +1,5 @@
 # TODO
 
-- Makefile & Libft / Other projects include
-
-- Learn functions
-
 // we know
 printf, malloc, free, write, open, read, close, 
 kill, exit,
@@ -32,9 +28,12 @@ strerror, perror,
 isatty, ttyname, ttyslot, ioctl, 
 getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
-- Command Execution
+# Testing TODO
+- Return value of a process
+- Quotes
+- Redirections
+- Pipes
 - Environment variables
-- Directory management
 
 # Faza 1: Szkielet (Wspólnie - 1-2 dni)
 [v] Stworzenie repozytorium, Makefile i włączenie Libft.
@@ -67,9 +66,7 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 - [v] Search and launch the right executable (based on the PATH variable or using a
 relative or an absolute path).
 - [v] Use at most one global variable to indicate a received signal. Consider the
-implications: this approach ensures that your signal handler will not access your
-main data structures.
-
+implications: this approach ensures that your signal handler will not access your main data structures.
 - [ ] Handle ’ (single quote) which should prevent the shell from interpreting the meta-
 characters in the quoted sequence.
 - [ ] Handle " (double quote) which should prevent the shell from interpreting the meta-

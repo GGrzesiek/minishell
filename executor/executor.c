@@ -57,6 +57,8 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 {
 	char *name;
 
+  free_split(shell->paths);
+  init_path(shell);
 	name = cmd->args[0];
   if (!name)
     return(close_pipe(cmd), 1);

@@ -3,11 +3,16 @@
 int	export(t_shell *shell, t_cmd *cmd)
 {
 	t_env	*new_node;
+  char *key;
 
-	new_node = new_env_node(cmd->args[1]);
-	if (!new_node)
-		end(shell, "envp new node malloc error\n");
-	env_add_back(&shell->env_list, new_node);
+  key = cmd->args[1];
+  if (key)
+  {
+    new_node = new_env_node(key);
+	  if (!new_node)
+  		end(shell, "envp new node malloc error\n");
+  	env_add_back(&shell->env_list, new_node);
+  }
   if (cmd->fdin != STDIN_FILENO)
     close(cmd->fdin);
   return (0);
@@ -15,12 +20,13 @@ int	export(t_shell *shell, t_cmd *cmd)
 
 int	unset(t_shell *shell, t_cmd *cmd)
 {
-	if (ft_strncmp("PATH", cmd->args[1], 5) == 0)
-	{
-		free_split(shell->paths);
-		shell->paths = NULL;
-	}
-	env_del(&shell->env_list, cmd->args[1]);
+  char *key;
+
+  key = cmd->args[1];
+  if (key)
+  {
+    env_del(&shell->env_list, key);
+  }
   if (cmd->fdin != STDIN_FILENO)
     close(cmd->fdin);
   return (0);

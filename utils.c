@@ -25,5 +25,6 @@ t_cmd	*init_single_cmd(t_shell *shell, char *line)
   new->next = NULL;
   new->redirs = NULL;
   new->path = NULL;
+  shell->cmds = new;
 	return (new);
 }

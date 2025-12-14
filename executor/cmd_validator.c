@@ -21,18 +21,20 @@ static char	*validate_in_paths(t_shell *shell, char *name)
 	int		j;
 
 	j = 0;
+  path = NULL;
 	paths = shell->paths;
-	while (paths[j])
-	{
-		path = ft_strjoin(paths[j], name);
-		if (!path)
-			end(shell, "command full path malloc error\n");
-		if (access(path, X_OK) == 0)
-			break ;
-		free(path);
-		path = NULL;
-		j++;
-	}
+  if (paths) 
+    while (paths[j])
+    {
+      path = ft_strjoin(paths[j], name);
+      if (!path)
+        end(shell, "command full path malloc error\n");
+      if (access(path, X_OK) == 0)
+        break ;
+      free(path);
+      path = NULL;
+      j++;
+    }
 	return (path);
 }
 

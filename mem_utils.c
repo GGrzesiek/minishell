@@ -7,19 +7,45 @@ void	free_env(t_env *node)
 	free(node);
 }
 
-void	end(t_shell *shell, char *msg)
+void free_env_lst(t_env *lst)
 {
-	t_env	*lst;
 	t_env	*tmp;
 
-	rl_clear_history();
-	lst = shell->env_list;
 	while (lst)
 	{
 		tmp = lst;
 		lst = lst->next;
 		free_env(tmp);
 	}
+}
+
+void free_cmd_chain(t_cmd *cmd)
+{
+  t_cmd	*tmp;
+  t_redir *redir;
+  t_redir *rtmp;
+
+	while (cmd)
+	{
+		tmp = cmd;
+		cmd = cmd->next;
+    redir = tmp->redirs;
+    free_split(tmp->args);
+    free(tmp);
+    while(redir)
+    {
+      rtmp = redir;
+      redir = redir->next;
+      free(rtmp);
+    }
+	}
+}
+
+void	end(t_shell *shell, char *msg)
+{
+	rl_clear_history();
+  free_cmd_chain(shell->cmds);
+  free_env_lst(shell->env_list);
 	free_split(shell->paths);
 	if (msg)
 		write(STDERR_FILENO, msg, ft_strlen(msg));
