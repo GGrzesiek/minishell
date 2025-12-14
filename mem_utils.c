@@ -12,7 +12,6 @@ void	end(t_shell *shell, char *msg)
 	t_env	*lst;
 	t_env	*tmp;
 
-	// FREE ENV LIST
 	rl_clear_history();
 	lst = shell->env_list;
 	while (lst)
@@ -41,4 +40,14 @@ void	free_split(char **sp)
 		}
 		free(sp);
 	}
+}
+
+void close_pipe(t_cmd *cmd)
+{
+  if (cmd->fdin != STDIN_FILENO)
+    close(cmd->fdin);
+  if (cmd->fdout != STDOUT_FILENO)
+    close(cmd->fdout);
+  if (cmd->next && cmd->next->fdin != STDIN_FILENO)
+    close(cmd->next->fdin);
 }

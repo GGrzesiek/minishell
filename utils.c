@@ -1,7 +1,7 @@
 
 #include "minishell.h"
 
-/* bufered wrapper for getcwd*/
+/* bufered wrapper for getcwd */
 char	*getcwdir(t_shell *shell)
 {
 	static char	buffer[PATH_MAX] = "";
@@ -22,5 +22,8 @@ t_cmd	*init_single_cmd(t_shell *shell, char *line)
 	if (!args || !new)
 		end(shell, "single cmd init malloc error\n");
 	new->args = args;
+  new->next = NULL;
+  new->redirs = NULL;
+  new->path = NULL;
 	return (new);
 }

@@ -39,7 +39,7 @@ void	execute_native_command(t_shell *shell, t_cmd *cmd)
   }
 }
 
-void	process_native_command(t_shell *shell, t_cmd *cmd)
+int	process_native_command(t_shell *shell, t_cmd *cmd)
 {
 	if (!shell->paths)
 		init_path(shell);
@@ -53,5 +53,6 @@ void	process_native_command(t_shell *shell, t_cmd *cmd)
 		free(cmd->path);
 	}
 	else
-		write_all(shell, STDOUT_FILENO, "Command not found\n");
+		return (perror("Command not found\n"), 1);
+  return (0);
 }

@@ -80,25 +80,26 @@ void				init_path(t_shell *shell);
 void				setup_signals(void);
 
 /* Cmd processing */
-void				execute_command(t_shell *shell, t_cmd *cmd);
+int execute_cmd_chain(t_shell *shell, t_cmd *cmd);
 void				validate_command(t_shell *shell, t_cmd *cmd);
-void				process_native_command(t_shell *shell, t_cmd *cmd);
+int	process_native_command(t_shell *shell, t_cmd *cmd);
 
 /* Piping */
 void				write_all(t_shell *shell, int fd, char *content);
 char				*read_all(t_shell *shell, int fd);
 
 /* Built-ins */
-void				change_directory(t_shell *shell, t_cmd *cmd);
-void				export(t_shell *shell, t_cmd *cmd);
-void				unset(t_shell *shell, t_cmd *cmd);
-void				print_env(t_shell *shell, t_env **head);
+int				change_directory(t_shell *shell, t_cmd *cmd);
+int				export(t_shell *shell, t_cmd *cmd);
+int				unset(t_shell *shell, t_cmd *cmd);
+int	      print_env(t_shell *shell, t_cmd *cmd);
 
 /* Utils */
 char				*getcwdir(t_shell *shell);
 void				end(t_shell *shell, char *msg);
 void				free_split(char **sp);
 void free_env(t_env *node);
+void close_pipe(t_cmd *cmd);
 
 /* Env variable manager */
 t_env				*new_env_node(char *str);
