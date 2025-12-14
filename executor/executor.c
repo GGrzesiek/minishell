@@ -124,6 +124,6 @@ int execute_cmd_chain(t_shell *shell, t_cmd *cmd)
   }
   if (cmd->fdout != STDOUT_FILENO)
     close(cmd->fdout);
-  wait(0);
+  while(wait(0) >= 0);
   return(0);
 }

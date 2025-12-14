@@ -69,7 +69,6 @@ int	print_env(t_shell *shell, t_cmd *cmd)
 	}
 	else
   {
-    wait(0);
     if (cmd->fdin != STDIN_FILENO)
       close(cmd->fdin);
   }
