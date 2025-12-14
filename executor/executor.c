@@ -6,8 +6,8 @@ void open_pipe(t_shell *shell, t_cmd *cmd)
 
   if (pipe(p) == -1)
     end(shell, "pipe fail");
-  cmd->fdout = p[0];
-  cmd->next->fdin = p[1];
+  cmd->fdout = p[1]; // write end
+  cmd->next->fdin = p[0]; // read end
 }
 
 int open_redir(t_cmd *cmd)
@@ -20,35 +20,36 @@ int open_redir(t_cmd *cmd)
   {
     if (redir->type == TOKEN_REDIR_IN)
     {
-      fd = open(redir->file, O_RDONLY);
-      if (fd == -1)
-        return(perror("File not found"), 1);
       if (cmd->fdin != STDIN_FILENO)
         close(cmd->fdin);
+      fd = open(redir->file, O_RDONLY);
+      if (fd == -1)
+        return(perror(""), 1);
       cmd->fdin = fd;
     }
-    if (redir->type == TOKEN_REDIR_HEREDOC)
+    else if (redir->type == TOKEN_REDIR_HEREDOC)
     {
       // TODO
     }
-    if (redir->type == TOKEN_REDIR_OUT)
+    else if (redir->type == TOKEN_REDIR_OUT)
     {
+      if (cmd->fdout != STDOUT_FILENO)
+        close(cmd->fdout);
       fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC);
       if (fd == -1)
-        return(perror("Error creating truncate file"), 1);
-      if (cmd->fdout != STDOUT_FILENO)
-        close(cmd->fdout);
+        return(perror(""), 1);
       cmd->fdout = fd;
     }
-    if (redir->type == TOKEN_REDIR_APPEND)
+    else if (redir->type == TOKEN_REDIR_APPEND)
     {
+      if (cmd->fdout != STDOUT_FILENO)
+        close(cmd->fdout);
       fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND);
       if (fd == -1)
-        return(perror("Error oppening append file"), 1);
-      if (cmd->fdout != STDOUT_FILENO)
-        close(cmd->fdout);
+        return(perror(""), 1);
       cmd->fdout = fd;
     }
+    redir=redir->next;
   }
   return (0);
 }
@@ -91,6 +92,7 @@ int execute_cmd_chain(t_shell *shell, t_cmd *cmd)
       return (close_pipe(cmd), 1);
     if (!cmd->next)
       break ;
+    cmd=cmd->next;
   }
   if (cmd->fdout != STDOUT_FILENO)
     close(cmd->fdout);

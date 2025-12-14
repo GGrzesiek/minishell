@@ -32,8 +32,7 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 - Return value of a process
 - Quotes
 - Redirections
-- Pipes
-- Environment variables
+- Environment variable parsing
 
 # Faza 1: Szkielet (Wspólnie - 1-2 dni)
 [v] Stworzenie repozytorium, Makefile i włączenie Libft.
@@ -46,14 +45,15 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 [v] Osoba B: Pisze prosty executor, który potrafi uruchomić jedną komendę (bez pipe'ów), np. /bin/ls. Implementuje szukanie w PATH.
 
 # Faza 3: Integracja Logiki (Praca równoległa - 5-7 dni)
-[ ] Osoba A: Implementuje obsługę $? i zmiennych środowiskowych ($HOME itp.). 
+[ ] Osoba A: Implementuje obsługę $? (replace as errno) i zmiennych środowiskowych ($HOME itp.). 
 [v] Dodaje logikę export i unset.
 [ ] Osoba B: Implementuje przekierowania proste (<, >). 
 [v] Implementuje cd (zmienia katalog roboczy procesu) i pwd.
 
 # Faza 4: "The Heavy Lifting" (Najtrudniejszy etap - 5-7 dni)
 [ ] Osoba A: Dopracowuje parser pod kątem dziwnych przypadków (np. echo "sdfsdf"'$USER' > plik). Przygotowuje listę komend dla potoków (linked list of commands).
-[ ] Osoba B: Implementuje Pipes (|). Implementuje heredoc (<<).
+[v] Osoba B: Implementuje Pipes (|). 
+[ ] Implementuje heredoc (<<).
 
 # Faza 5: Czyszczenie i Edge Cases (Wspólnie - 3-4 dni)
 [ ] Memory Leaks: valgrind --leak-check=full. Pamiętajcie, że readline może cieknąć (jest to dozwolone), ale wasz kod nie może.
@@ -66,7 +66,7 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 - [v] Search and launch the right executable (based on the PATH variable or using a
 relative or an absolute path).
 - [v] Use at most one global variable to indicate a received signal. Consider the
-implications: this approach ensures that your signal handler will not access your main data structures.
+implications: this approach ensures that your signal handler will not access your 'main data structures.
 - [ ] Handle ’ (single quote) which should prevent the shell from interpreting the meta-
 characters in the quoted sequence.
 - [ ] Handle " (double quote) which should prevent the shell from interpreting the meta-
@@ -77,7 +77,7 @@ characters in the quoted sequence except for $ (dollar sign).
 ◦ << should be given a delimiter, then read the input until a line containing the
 delimiter is seen. However, it doesn’t have to update the history!
 ◦ >> should redirect output in append mode.
-- [ ] Implement pipes (| character). The output of each command in the pipeline is
+- [v] Implement pipes (| character). The output of each command in the pipeline is
 connected to the input of the next command via a pipe.
 - [ ] Handle environment variables ($ followed by a sequence of characters) which
 should expand to their values.
