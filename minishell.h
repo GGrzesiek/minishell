@@ -49,7 +49,7 @@ typedef struct s_token
 typedef struct s_redir
 {
 	t_token_type	type;
-	char			*file;
+	char			*file; // for heredoc store the content of the file here.
 	struct s_redir	*next;
 }					t_redir;
 

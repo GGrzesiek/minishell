@@ -31,7 +31,6 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # Testing TODO
 - Return value of a process
 - Quotes
-- Redirections
 - Environment variable parsing
 
 # Faza 1: Szkielet (Wspólnie - 1-2 dni)
@@ -53,7 +52,7 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # Faza 4: "The Heavy Lifting" (Najtrudniejszy etap - 5-7 dni)
 [ ] Osoba A: Dopracowuje parser pod kątem dziwnych przypadków (np. echo "sdfsdf"'$USER' > plik). Przygotowuje listę komend dla potoków (linked list of commands).
 [v] Osoba B: Implementuje Pipes (|). 
-[ ] Implementuje heredoc (<<).
+[v] Implementuje heredoc (<<).
 
 # Faza 5: Czyszczenie i Edge Cases (Wspólnie - 3-4 dni)
 [ ] Memory Leaks: valgrind --leak-check=full. Pamiętajcie, że readline może cieknąć (jest to dozwolone), ale wasz kod nie może.

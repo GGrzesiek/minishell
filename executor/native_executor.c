@@ -16,6 +16,8 @@ static void	run_child(t_shell *shell, t_cmd *cmd)
       end(shell, "dup2 output fail");
     close(cmd->fdout);
   }
+  if(cmd->next)
+    close(cmd->next->fdin);
 	execve(cmd->path, cmd->args, shell->envp);
 	perror(cmd->args[0]);
   free(cmd->path);
@@ -35,7 +37,6 @@ void	execute_native_command(t_shell *shell, t_cmd *cmd)
   {
     if (cmd->fdout != STDOUT_FILENO)
       close(cmd->fdout);
-    // wait(0);
   }
 }
 

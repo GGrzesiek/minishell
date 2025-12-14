@@ -10,48 +10,76 @@ void open_pipe(t_shell *shell, t_cmd *cmd)
   cmd->next->fdin = p[0]; // read end
 }
 
-int open_redir(t_cmd *cmd)
+int process_in(t_cmd *cmd, char *file)
 {
-  t_redir *redir;
   int fd;
 
+  if (cmd->fdin != STDIN_FILENO)
+    close(cmd->fdin);
+  fd = open(file, O_RDONLY);
+  if (fd == -1)
+    return(perror(""), 1);
+  cmd->fdin = fd;
+  return(0);
+}
+
+int process_heredoc(t_shell *shell, t_cmd *cmd, char *file)
+{
+  int p[2];
+
+  if (pipe(p) == -1)
+    end(shell, "pipe fail");
+  write_all(shell, p[1], file);
+  close(p[1]);
+  cmd->fdin = p[0];
+  return (0);
+}
+
+int process_out(t_cmd *cmd, char *file)
+{
+  int fd;
+
+  if (cmd->fdout != STDOUT_FILENO)
+        close(cmd->fdout);
+  fd = open(file, O_WRONLY | O_CREAT | O_TRUNC);
+  if (fd == -1)
+    return(perror(""), 1);
+  cmd->fdout = fd;
+  return (0);
+}
+
+int process_append(t_cmd *cmd, char *file)
+{
+  int fd;
+  if (cmd->fdout != STDOUT_FILENO)
+    close(cmd->fdout);
+  fd = open(file, O_WRONLY | O_CREAT | O_APPEND);
+  if (fd == -1)
+    return(perror(""), 1);
+  cmd->fdout = fd;
+  return (0);
+}
+
+int open_redir(t_shell *shell, t_cmd *cmd)
+{
+  t_redir *redir;
+  int code;
+
+  code = 0;
   redir = cmd->redirs;
-  while (redir)
+  while (redir && !code)
   {
     if (redir->type == TOKEN_REDIR_IN)
-    {
-      if (cmd->fdin != STDIN_FILENO)
-        close(cmd->fdin);
-      fd = open(redir->file, O_RDONLY);
-      if (fd == -1)
-        return(perror(""), 1);
-      cmd->fdin = fd;
-    }
+      code = process_in(cmd, redir->file);
     else if (redir->type == TOKEN_REDIR_HEREDOC)
-    {
-      // TODO
-    }
+      code = process_heredoc(shell, cmd, redir->file);
     else if (redir->type == TOKEN_REDIR_OUT)
-    {
-      if (cmd->fdout != STDOUT_FILENO)
-        close(cmd->fdout);
-      fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC);
-      if (fd == -1)
-        return(perror(""), 1);
-      cmd->fdout = fd;
-    }
+      code = process_out(cmd, redir->file);
     else if (redir->type == TOKEN_REDIR_APPEND)
-    {
-      if (cmd->fdout != STDOUT_FILENO)
-        close(cmd->fdout);
-      fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND);
-      if (fd == -1)
-        return(perror(""), 1);
-      cmd->fdout = fd;
-    }
+      code = process_append(cmd, redir->file);
     redir=redir->next;
   }
-  return (0);
+  return (code);
 }
 
 int	execute_command(t_shell *shell, t_cmd *cmd)
@@ -86,7 +114,7 @@ int execute_cmd_chain(t_shell *shell, t_cmd *cmd)
     cmd->fdout = STDOUT_FILENO;
     if (cmd->next)
       open_pipe(shell, cmd);
-    if (open_redir(cmd))
+    if (open_redir(shell, cmd))
       return (close_pipe(cmd), 1);
     if (execute_command(shell, cmd))
       return (close_pipe(cmd), 1);
@@ -96,5 +124,6 @@ int execute_cmd_chain(t_shell *shell, t_cmd *cmd)
   }
   if (cmd->fdout != STDOUT_FILENO)
     close(cmd->fdout);
+  wait(0);
   return(0);
 }
