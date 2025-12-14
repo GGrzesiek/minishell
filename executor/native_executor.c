@@ -17,9 +17,7 @@ static void	run_child(t_shell *shell, t_cmd *cmd)
     close(cmd->fdout);
   }
 	execve(cmd->path, cmd->args, shell->envp);
-	perror("Comand Failed:");
-	printf("Path: %s\n", cmd->path);
-	exit(1);
+	perror(cmd->args[0]);
 }
 
 void	execute_native_command(t_shell *shell, t_cmd *cmd)
@@ -53,6 +51,6 @@ int	process_native_command(t_shell *shell, t_cmd *cmd)
 		free(cmd->path);
 	}
 	else
-		return (perror("Command not found\n"), 1);
+		return (perror(cmd->args[0]), 1);
   return (0);
 }

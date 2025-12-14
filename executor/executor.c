@@ -58,6 +58,8 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 	char *name;
 
 	name = cmd->args[0];
+  if (!name)
+    return(close_pipe(cmd), 1);
 	if (ft_strncmp("exit", name, 5) == 0)
 		end(shell, NULL);
 	else if (ft_strncmp("cd", name, 3) == 0)

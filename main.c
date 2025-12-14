@@ -22,6 +22,11 @@ int	main(int argc, char **argv, char **envp)
 		if (*line)
 		{
 			add_history(line);
+
+			t_cmd *cmd = init_single_cmd(&shell, line);
+			execute_cmd_chain(&shell, cmd);
+			free_split(cmd->args);
+			free(cmd);
 		}
 	}
 }

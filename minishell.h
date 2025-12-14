@@ -97,6 +97,7 @@ void				end(t_shell *shell, char *msg);
 void				free_split(char **sp);
 void free_env(t_env *node);
 void close_pipe(t_cmd *cmd);
+t_cmd	*init_single_cmd(t_shell *shell, char *line);
 
 /* Env variable manager */
 t_env				*new_env_node(char *str);
