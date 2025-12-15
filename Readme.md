@@ -43,6 +43,8 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 [v] Obsługa sygnałów w pętli głównej (pusta obsługa, byle nie crashowało).
 
 # Faza 2: Podstawy (Praca równoległa - 3-5 dni)
+[V] Osoba A: Pisze tokenizer, który dzieli input po spacjach, ale ignoruje spacje w cudzysłowach.
+[v] Osoba B: Pisze prosty executor, który potrafi uruchomić jedną komendę (bez pipe'ów), np. /bin/ls. Implementuje szukanie w PATH.
 [ ] Osoba A: Pisze tokenizer, który dzieli input po spacjach, ale ignoruje spacje w cudzysłowach.
 [v] Osoba B: Pisze prosty executor, który potrafi uruchomić jedną komendę (bez pipe'ów), np. /bin/ls. Implementuje szukanie w PATH.
 
