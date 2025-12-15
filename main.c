@@ -1,22 +1,27 @@
 
 #include "minishell.h"
 
-int g_SHLVL = 0;
+volatile int	g_SHLVL = 0;
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-  t_shell shell;
-  char *line;
+	t_shell shell;
+	char *line;
 
-  shell.argc = argc;
-	shell.argv = argv;
+	(void) argc;
+	(void) argv;
+	init_shell(&shell, envp);
+	setup_signals();
+	while (1)
+	{
+		line = readline("mini(s)hell> ");
 
-  init_shell(&shell, envp);
-  setup_signals();
+		if (!line) // Ctrl+D
+			end(&shell, NULL);
 
-  while (1)
-  {
-    line = readline("mini(s)hell> ");
+		if (*line)
+		{
+			add_history(line);
 
     if(!line) // Ctrl+D
       end(&shell, NULL);
@@ -33,6 +38,7 @@ int main(int argc, char **argv, char **envp)
       // t_token *temp = tokens;
       t_cmd *curr_cmd = cmds;
       int cmd_idx = 1;
+      execute_cmd_chain(&shell, cmds);
       while (curr_cmd)
       {
         printf("Komenda %d \n",cmd_idx++);
@@ -55,9 +61,10 @@ int main(int argc, char **argv, char **envp)
       // execute_command(&shell, cmd);
       // free_split(cmd->args);
       // free(cmd);
-      free_cmds(cmds);
+      // free_cmds(cmds);
       free_tokens(tokens);
       free(line);
+      }
     }
   }
 }
