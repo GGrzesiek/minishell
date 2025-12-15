@@ -5,7 +5,10 @@ SRCS = \
 	main.c \
 	init.c \
 	signals.c \
-	utils.c
+	utils.c \
+	lexer.c \
+	parser.c \
+	parser_utils.c
 
 OBJS = $(SRCS:.c=.o)
 OBJ_PATHS = $(addprefix $(OBJS_DIR)/, $(OBJS))

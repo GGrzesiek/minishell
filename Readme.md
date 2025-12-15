@@ -34,8 +34,8 @@ Zdefiniowanie struktur danych w .h.
 Obsługa sygnałów w pętli głównej (pusta obsługa, byle nie crashowało).
 
 # Faza 2: Podstawy (Praca równoległa - 3-5 dni)
-Osoba A: Pisze tokenizer, który dzieli input po spacjach, ale ignoruje spacje w cudzysłowach.
-Osoba B: Pisze prosty executor, który potrafi uruchomić jedną komendę (bez pipe'ów), np. /bin/ls. Implementuje szukanie w PATH.
+[V] Osoba A: Pisze tokenizer, który dzieli input po spacjach, ale ignoruje spacje w cudzysłowach.
+[v] Osoba B: Pisze prosty executor, który potrafi uruchomić jedną komendę (bez pipe'ów), np. /bin/ls. Implementuje szukanie w PATH.
 
 # Faza 3: Integracja Logiki (Praca równoległa - 5-7 dni)
 Osoba A: Implementuje obsługę $? i zmiennych środowiskowych ($HOME itp.). Dodaje logikę export i unset.

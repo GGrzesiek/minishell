@@ -72,4 +72,41 @@ void	init_shell(t_shell *shell, char **envp);
 void	cleanup_shell(t_shell *shell);
 void	setup_signals(void);
 
+/* main funciton to free everything and end the program at any time */
+void  end(t_shell *shell, char *msg);
+void  free_split(char **sp);
+void free_redirs(t_redir *head);
+void free_cmds(t_cmd *head);
+void free_tokens(t_token *head);
+
+void execute_command(t_shell *shell, t_cmd *cmd);
+/* executes the command with already parsed path */
+void execute_native_command(t_shell *shell, t_cmd *cmd);
+
+void write_all(t_shell *shell, int fd, char *content);
+char *read_all(t_shell *shell, int fd);
+
+char *getcwdir(t_shell *shell);
+void change_directory(t_shell *shell, char *to);
+
+
+/* lexer and parser functions */
+t_token *tokenizer(char *line);
+t_cmd *init_cmd(void);
+void cmd_add_back(t_cmd **head, t_cmd *new_cmd);
+t_cmd *parse_tokens(t_token *tokens);
+void redir_add_back(t_redir **head, t_redir *new);
+t_redir *new_redir(t_token_type type, char *filename);
+int add_arg(t_cmd *cmd, char *arg);
+
+/*TESTING*/
+t_cmd *init_single_cmd(t_shell *shell, char *line);
+
+t_env	*new_env_node(char *str);
+void	env_add_back(t_env **head, t_env *new_node);
+void env_del(t_env **head, char *key);
+void init_path(t_shell *shell);
+char *env_get(t_env **head, char *key);
+void print_env(t_shell *shell, t_env **head);
+
 #endif
