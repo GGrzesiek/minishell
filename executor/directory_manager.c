@@ -1,5 +1,15 @@
 #include "./../minishell.h"
 
+/* bufered wrapper for getcwd */
+static char	*getcwdir(t_shell *shell)
+{
+	static char	buffer[PATH_MAX] = "";
+	getcwd(buffer, sizeof(buffer));
+	if (!*buffer)
+		end(shell, "error getting cwd\n");
+	return (buffer);
+}
+
 int	change_directory(t_shell *shell, t_cmd *cmd)
 {
 	char *to;
@@ -14,7 +24,7 @@ int	change_directory(t_shell *shell, t_cmd *cmd)
 			return (1);
 	}
 	chdir(to);
-  key = ft_strjoin("PWD=", getenv("PWD"));
+  key = ft_strjoin("PWD=", getcwdir(shell));
   new_node = new_env_node(key);
   free(key);
   if (!new_node)
@@ -23,16 +33,6 @@ int	change_directory(t_shell *shell, t_cmd *cmd)
   if (errno)
     return(perror(cmd->args[0]), 1);
   return (0);
-}
-
-/* bufered wrapper for getcwd */
-static char	*getcwdir(t_shell *shell)
-{
-	static char	buffer[PATH_MAX] = "";
-	getcwd(buffer, sizeof(buffer));
-	if (!*buffer)
-		end(shell, "error getting cwd\n");
-	return (buffer);
 }
 
 static void run_child(t_shell *shell, t_cmd *cmd)
