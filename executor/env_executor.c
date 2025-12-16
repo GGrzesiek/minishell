@@ -9,6 +9,7 @@ static void print_sorted_declare_env(t_shell *shell, t_cmd *cmd)
 		end(shell, "fork failed\n");
 	else if (pid == 0)
   {
+    // TODO
     (void) cmd;
   }
 }

@@ -112,8 +112,6 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 		return(recho(shell, cmd));
 	else
 		return(process_native_command(shell, cmd));
-   if (cmd->fdin != STDIN_FILENO)
-    close(cmd->fdin);
   return (0);
 }
 
