@@ -3,6 +3,8 @@
 int	change_directory(t_shell *shell, t_cmd *cmd)
 {
 	char *to;
+  t_env	*new_node;
+  char *key;
 
 	to = cmd->args[1];
 	if (!to)
@@ -12,6 +14,12 @@ int	change_directory(t_shell *shell, t_cmd *cmd)
 			return (1);
 	}
 	chdir(to);
+  key = ft_strjoin("PWD=", getenv("PWD"));
+  new_node = new_env_node(key);
+  free(key);
+  if (!new_node)
+    end(shell, "chdir new node malloc error\n");
+  env_add_back(&shell->env_list, new_node);
   if (errno)
     return(perror(cmd->args[0]), 1);
   return (0);
