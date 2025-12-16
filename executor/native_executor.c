@@ -1,7 +1,5 @@
 #include "./../minishell.h"
 
-extern int g_SHLVL;
-
 static void	run_child(t_shell *shell, t_cmd *cmd)
 {
   if (cmd->fdin != STDIN_FILENO)
@@ -45,9 +43,7 @@ int	process_native_command(t_shell *shell, t_cmd *cmd)
   validate_command(shell, cmd);
 	if (cmd->path)
 	{
-		g_SHLVL++;
 		execute_native_command(shell, cmd);
-		g_SHLVL--;
 		free(cmd->path);
 	}
 	else

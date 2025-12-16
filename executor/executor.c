@@ -1,5 +1,7 @@
 #include "./../minishell.h"
 
+extern int g_SHLVL;
+
 void open_pipe(t_shell *shell, t_cmd *cmd)
 {
   int p[2];
@@ -113,6 +115,7 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 int execute_cmd_chain(t_shell *shell, t_cmd *cmd)
 {
   cmd->fdin = STDIN_FILENO;
+  g_SHLVL++;
   while (1)
   {
     cmd->fdout = STDOUT_FILENO;
@@ -129,5 +132,6 @@ int execute_cmd_chain(t_shell *shell, t_cmd *cmd)
   if (cmd->fdout != STDOUT_FILENO)
     close(cmd->fdout);
   while(wait(0) >= 0);
+  g_SHLVL--;
   return(0);
 }
