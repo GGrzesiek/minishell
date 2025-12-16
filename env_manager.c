@@ -26,7 +26,7 @@ t_env	*new_env_node(char *str)
 int	env_add_back(t_env **head, t_env *new_node)
 {
 	t_env	*curr;
-  t_env *prev;
+	t_env	*prev;
 	size_t	len;
 
 	if (!head || !new_node)
@@ -37,17 +37,17 @@ int	env_add_back(t_env **head, t_env *new_node)
 	if (!*head)
 		return (*head = new_node, 0);
 	curr = *head;
-  prev = NULL;
+	prev = NULL;
 	while (curr)
 	{
 		if (ft_strncmp(curr->key, new_node->key, len) == 0)
-    {
-      if (prev)
-        prev->next = new_node;
-      new_node->next=curr->next;
-      return (free_env(curr), 1);
-    }
-    prev = curr;
+		{
+			if (prev)
+				prev->next = new_node;
+			new_node->next = curr->next;
+			return (free_env(curr), 1);
+		}
+		prev = curr;
 		curr = curr->next;
 	}
 	prev->next = new_node;

@@ -12,15 +12,14 @@ void	handle_sigint(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-  else
-    write(1, "\n", 1);
+	else
+		write(1, "\n", 1);
 }
 
 // TODO
 void	handle_sigquit(int sig)
 {
 	(void)sig;
-
 	// if (g_SHLVL == 0)
 	// {
 	// 	rl_on_new_line();
