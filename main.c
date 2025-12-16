@@ -19,20 +19,10 @@ int	main(int argc, char **argv, char **envp)
 		if (!line) // Ctrl+D
 			end(&shell, NULL);
 
-		if (*line)
-		{
-			add_history(line);
-
-    if(!line) // Ctrl+D
-      end(&shell, NULL);
-
     if(*line)
     {
       add_history(line);
-
-      // t_cmd *cmd = init_single_cmd(&shell, line);
       t_token *tokens = tokenizer(line);
-
       t_cmd *cmds = parse_tokens(tokens);
 
       // t_token *temp = tokens;
@@ -65,7 +55,6 @@ int	main(int argc, char **argv, char **envp)
       // free_cmds(cmds);
       free_tokens(tokens);
       free(line);
-      }
     }
   }
 }
