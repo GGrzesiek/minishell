@@ -3,6 +3,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 MAIN = main.c
 SRCS = \
+	executor/echo.c \
 	executor/cmd_validator.c \
 	executor/env_executor.c \
 	env_manager.c \

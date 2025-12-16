@@ -35,6 +35,7 @@ int	unset(t_shell *shell, t_cmd *cmd)
 static void run_child(t_shell *shell, t_cmd *cmd)
 {
   t_env	*curr;
+  
   curr = shell->env_list;
   if (cmd->fdin != STDIN_FILENO)
   {

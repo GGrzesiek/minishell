@@ -95,12 +95,16 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 		end(shell, NULL);
 	else if (ft_strncmp("cd", name, 3) == 0)
 		return(change_directory(shell, cmd));
+  else if (ft_strncmp("pwd", name, 4) == 0)
+		return(pwd(shell, cmd));
 	else if (ft_strncmp("export", name, 7) == 0)
 		return(export(shell, cmd));
 	else if (ft_strncmp("unset", name, 6) == 0)
 		return(unset(shell, cmd));
 	else if (ft_strncmp("env", name, 4) == 0)
 		return(print_env(shell, cmd));
+  else if (ft_strncmp("echo", name, 5) == 0)
+		return(recho(shell, cmd));
 	else
 		return(process_native_command(shell, cmd));
   return (0);

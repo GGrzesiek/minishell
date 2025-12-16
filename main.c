@@ -36,10 +36,11 @@ int	main(int argc, char **argv, char **envp)
       t_cmd *cmds = parse_tokens(tokens);
 
       // t_token *temp = tokens;
-      t_cmd *curr_cmd = cmds;
-      int cmd_idx = 1;
+      // t_cmd *curr_cmd = cmds;
+      // int cmd_idx = 1;
+  
       execute_cmd_chain(&shell, cmds);
-      while (curr_cmd)
+      /* while (curr_cmd)
       {
         printf("Komenda %d \n",cmd_idx++);
         if(curr_cmd->args)
@@ -54,10 +55,10 @@ int	main(int argc, char **argv, char **envp)
           printf("redir: type=%d, file=%s\n",r->type,r->file);
           r = r->next;
         }
-        curr_cmd = curr_cmd->next;
+         curr_cmd = curr_cmd->next; */
         // printf("Token: Type=%d, Value=[%s]\n", temp->type, temp->value);
         // temp = temp->next;
-      }
+      // }
       // execute_command(&shell, cmd);
       // free_split(cmd->args);
       // free(cmd);

@@ -96,9 +96,10 @@ int				change_directory(t_shell *shell, t_cmd *cmd);
 int				export(t_shell *shell, t_cmd *cmd);
 int				unset(t_shell *shell, t_cmd *cmd);
 int	      print_env(t_shell *shell, t_cmd *cmd);
+int pwd(t_shell *shell, t_cmd *cmd);
+int recho(t_shell *shell, t_cmd *cmd);
 
 /* Utils */
-char				*getcwdir(t_shell *shell);
 void				end(t_shell *shell, char *msg);
 void				free_split(char **sp);
 void free_env(t_env *node);
