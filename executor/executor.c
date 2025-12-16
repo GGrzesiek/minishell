@@ -55,7 +55,7 @@ int process_out(t_cmd *cmd, char *file)
 int process_append(t_cmd *cmd, char *file)
 {
   int fd;
-  
+
   if (cmd->fdout != STDOUT_FILENO)
     close(cmd->fdout);
   fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -130,12 +130,14 @@ int execute_cmd_chain(t_shell *shell, t_cmd *cmd)
       return (close_pipe(cmd), 1);
     if (execute_command(shell, cmd))
       return (close_pipe(cmd), 1);
+    if (cmd->fdin != STDIN_FILENO)
+      close(cmd->fdin);
+    if (cmd->fdout != STDOUT_FILENO)
+      close(cmd->fdout);
     if (!cmd->next)
       break ;
     cmd=cmd->next;
   }
-  if (cmd->fdout != STDOUT_FILENO)
-    close(cmd->fdout);
   while(wait(0) >= 0);
   g_SHLVL--;
   return(0);
