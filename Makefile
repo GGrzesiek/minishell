@@ -13,7 +13,10 @@ SRCS = \
 	executor/executor.c \
 	init.c \
 	signals.c \
-	utils.c
+	utils.c \
+	lexer.c \
+	parser.c \
+	parser_utils.c
 
 MOBJ = $(MAIN:.c=.o)
 OBJS = $(SRCS:.c=.o)

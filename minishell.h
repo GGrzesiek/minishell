@@ -76,6 +76,12 @@ void				init_shell(t_shell *shell, char **envp);
 void				init_path(t_shell *shell);
 void				setup_signals(void);
 
+/* main funciton to free everything and end the program at any time */
+void  end(t_shell *shell, char *msg);
+void  free_split(char **sp);
+void free_redirs(t_redir *head);
+void free_cmds(t_cmd *head);
+void free_tokens(t_token *head);
 /* Cmd processing */
 int execute_cmd_chain(t_shell *shell, t_cmd *cmd);
 void				validate_command(t_shell *shell, t_cmd *cmd);
@@ -98,6 +104,16 @@ void				free_split(char **sp);
 void free_env(t_env *node);
 void close_pipe(t_cmd *cmd);
 t_cmd	*init_single_cmd(t_shell *shell, char *line);
+
+
+/* lexer and parser functions */
+t_token *tokenizer(char *line);
+t_cmd *init_cmd(void);
+void cmd_add_back(t_cmd **head, t_cmd *new_cmd);
+t_cmd *parse_tokens(t_token *tokens);
+void redir_add_back(t_redir **head, t_redir *new);
+t_redir *new_redir(t_token_type type, char *filename);
+int add_arg(t_cmd *cmd, char *arg);
 
 /* Env variable manager */
 t_env				*new_env_node(char *str);
