@@ -1,10 +1,58 @@
 #include "./../minishell.h"
 
+static void printarr(char **args)
+{
+  int i;
+
+  i = 0;
+  if (!args || !*args)
+    return ;
+  while(args[i + 1])
+  {
+    printf("%s ", *args);
+    args++;
+  }
+  printf("%s", *args);
+}
+
+static int run_child(t_shell *shell, t_cmd *cmd)
+{
+  if (cmd->fdin != STDIN_FILENO)
+  {
+    if (dup2(cmd->fdin, STDIN_FILENO) == -1)
+      end(shell, "dup2 input fail");
+    close(cmd->fdin);
+  }
+  if (cmd->fdout != STDOUT_FILENO)
+  {
+    if (dup2(cmd->fdout, STDOUT_FILENO) == -1)
+      end(shell, "dup2 output fail");
+    close(cmd->fdout);
+  }
+  if (cmd->args[1] && ft_strncmp(cmd->args[1], "-n", 3) == 0)
+    return (printarr(&cmd->args[2]), 0);
+  else
+    return (printarr(&cmd->args[1]), printf("\n"), 0);
+}
+
+
 int recho(t_shell *shell, t_cmd *cmd)
 {
-  (void) shell;
-  (void) cmd;
-  (void) cmd;
+  int	pid;
+
+	pid = fork();
+	if (pid < 0)
+		end(shell, "fork failed\n");
+	else if (pid == 0)
+  {
+		run_child(shell, cmd);
+    end(shell, NULL);
+  }
+	else
+  {
+    if (cmd->fdout != STDOUT_FILENO)
+      close(cmd->fdout);
+  }
   return (0);
 }
 
