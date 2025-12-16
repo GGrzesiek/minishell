@@ -29,6 +29,8 @@ int process_heredoc(t_shell *shell, t_cmd *cmd, char *file)
 {
   int p[2];
 
+  if (cmd->fdin != STDIN_FILENO)
+    close(cmd->fdin);
   if (pipe(p) == -1)
     end(shell, "pipe fail");
   write_all(shell, p[1], file);
@@ -53,6 +55,7 @@ int process_out(t_cmd *cmd, char *file)
 int process_append(t_cmd *cmd, char *file)
 {
   int fd;
+  
   if (cmd->fdout != STDOUT_FILENO)
     close(cmd->fdout);
   fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -109,6 +112,8 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 		return(recho(shell, cmd));
 	else
 		return(process_native_command(shell, cmd));
+   if (cmd->fdin != STDIN_FILENO)
+    close(cmd->fdin);
   return (0);
 }
 

@@ -28,8 +28,6 @@ int	export(t_shell *shell, t_cmd *cmd)
   }
   else
     print_sorted_declare_env(shell, cmd);
-  if (cmd->fdin != STDIN_FILENO)
-    close(cmd->fdin);
   return (0);
 }
 
@@ -42,8 +40,6 @@ int	unset(t_shell *shell, t_cmd *cmd)
   {
     env_del(&shell->env_list, key);
   }
-  if (cmd->fdin != STDIN_FILENO)
-    close(cmd->fdin);
   return (0);
 }
 
@@ -83,10 +79,5 @@ int	print_env(t_shell *shell, t_cmd *cmd)
 	{
     run_child(shell, cmd);
 	}
-	else
-  {
-    if (cmd->fdin != STDIN_FILENO)
-      close(cmd->fdin);
-  }
   return (0);
 }
