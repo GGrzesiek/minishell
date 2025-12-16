@@ -35,7 +35,6 @@ static int run_child(t_shell *shell, t_cmd *cmd)
     return (printarr(&cmd->args[1]), printf("\n"), 0);
 }
 
-
 int recho(t_shell *shell, t_cmd *cmd)
 {
   int	pid;

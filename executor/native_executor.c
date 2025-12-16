@@ -35,6 +35,8 @@ void	execute_native_command(t_shell *shell, t_cmd *cmd)
   {
     if (cmd->fdout != STDOUT_FILENO)
       close(cmd->fdout);
+    if (cmd->fdin != STDIN_FILENO)
+      close(cmd->fdin);
   }
 }
 

@@ -1,5 +1,18 @@
 #include "./../minishell.h"
 
+static void print_sorted_declare_env(t_shell *shell, t_cmd *cmd)
+{
+  int pid;
+
+  pid = fork();
+	if (pid < 0)
+		end(shell, "fork failed\n");
+	else if (pid == 0)
+  {
+    (void) cmd;
+  }
+}
+
 int	export(t_shell *shell, t_cmd *cmd)
 {
 	t_env	*new_node;
@@ -13,6 +26,8 @@ int	export(t_shell *shell, t_cmd *cmd)
   		end(shell, "envp new node malloc error\n");
   	env_add_back(&shell->env_list, new_node);
   }
+  else
+    print_sorted_declare_env(shell, cmd);
   if (cmd->fdin != STDIN_FILENO)
     close(cmd->fdin);
   return (0);
