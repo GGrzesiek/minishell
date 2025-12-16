@@ -12,6 +12,8 @@ int	change_directory(t_shell *shell, t_cmd *cmd)
 			return (1);
 	}
 	chdir(to);
+  if (errno)
+    return(perror(cmd->args[0]), 1);
   return (0);
 }
 

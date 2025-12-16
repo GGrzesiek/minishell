@@ -42,8 +42,8 @@ int process_out(t_cmd *cmd, char *file)
   int fd;
 
   if (cmd->fdout != STDOUT_FILENO)
-        close(cmd->fdout);
-  fd = open(file, O_WRONLY | O_CREAT | O_TRUNC);
+    close(cmd->fdout);
+  fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
   if (fd == -1)
     return(perror(""), 1);
   cmd->fdout = fd;
@@ -55,7 +55,7 @@ int process_append(t_cmd *cmd, char *file)
   int fd;
   if (cmd->fdout != STDOUT_FILENO)
     close(cmd->fdout);
-  fd = open(file, O_WRONLY | O_CREAT | O_APPEND);
+  fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
   if (fd == -1)
     return(perror(""), 1);
   cmd->fdout = fd;
