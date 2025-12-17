@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_manager.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/17 12:33:51 by sandrzej          #+#    #+#             */
+/*   Updated: 2025/12/17 12:33:53 by sandrzej         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_env	*new_env_node(char *str)
@@ -85,8 +97,8 @@ int	env_del(t_env **head, char *key)
 
 char	*env_get(t_env **head, char *key)
 {
-	size_t len;
-	t_env *curr;
+	size_t	len;
+	t_env	*curr;
 
 	if (!head || !key || !*key)
 		return (NULL);

@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/17 12:34:17 by sandrzej          #+#    #+#             */
+/*   Updated: 2025/12/17 12:34:21 by sandrzej         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile int	g_SHLVL = 0;
+volatile int	g_shlvl = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -9,47 +20,22 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 	t_token	*tokens;
 	t_cmd	*cmds;
-	// t_redir	*r;
 
 	(void)argc;
 	(void)argv;
 	init_shell(&shell, envp);
-	setup_signals();
+	setup_signals(&shell);
 	while (1)
 	{
 		line = readline("mini(s)hell> ");
-		if (!line) // Ctrl+D
+		if (!line)
 			end(&shell, NULL);
 		if (*line)
 		{
 			add_history(line);
 			tokens = tokenizer(line);
 			cmds = parse_tokens(tokens);
-			// t_token *temp = tokens;
-			// t_cmd *curr_cmd = cmds;
-			// int cmd_idx = 1;
 			execute_cmd_chain(&shell, cmds);
-			/* while (curr_cmd)
-			{
-				printf("Komenda %d \n",cmd_idx++);
-				if(curr_cmd->args)
-				{
-				for (int i =0; curr_cmd->args[i]; i++)
-					printf("Arg[%d]: %s\n",i , curr_cmd->args[i]);
-				}
-				r = curr_cmd->redirs;
-				while(r)
-				{
-				printf("redir: type=%d, file=%s\n",r->type,r->file);
-				r = r->next;
-				}
-				curr_cmd = curr_cmd->next; */
-			// printf("Token: Type=%d, Value=[%s]\n", temp->type, temp->value);
-			// temp = temp->next;
-			// }
-			// execute_command(&shell, cmd);
-			// free_split(cmd->args);
-			// free(cmd);
 			free_cmds(cmds);
 			free_tokens(tokens);
 			free(line);

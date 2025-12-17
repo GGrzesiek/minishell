@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/17 12:34:47 by sandrzej          #+#    #+#             */
+/*   Updated: 2025/12/17 12:34:48 by sandrzej         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_cmd	*init_cmd(void)
@@ -70,7 +82,7 @@ t_redir	*new_redir(t_token_type type, char *filename)
 
 void	redir_add_back(t_redir **head, t_redir *new)
 {
-	t_redir *curr;
+	t_redir	*curr;
 
 	if (!*head)
 	{

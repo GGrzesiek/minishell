@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   directory_manager.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/17 12:40:14 by sandrzej          #+#    #+#             */
+/*   Updated: 2025/12/17 12:40:16 by sandrzej         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./../minishell.h"
 
 /* bufered wrapper for getcwd */
@@ -56,7 +68,7 @@ static void	run_child(t_shell *shell, t_cmd *cmd)
 
 int	pwd(t_shell *shell, t_cmd *cmd)
 {
-	int pid;
+	int	pid;
 
 	pid = fork();
 	if (pid < 0)

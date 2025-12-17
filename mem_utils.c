@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mem_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/17 12:34:26 by sandrzej          #+#    #+#             */
+/*   Updated: 2025/12/17 12:37:07 by sandrzej         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_env(t_env *node)
@@ -21,6 +33,7 @@ void	free_env_lst(t_env *lst)
 
 void	end(t_shell *shell, char *msg)
 {
+  tcsetattr(STDIN_FILENO, TCSANOW, &shell->t);
 	rl_clear_history();
 	free_cmds(shell->cmds);
 	free_env_lst(shell->env_list);
@@ -58,6 +71,7 @@ void	free_tokens(t_token *head)
 		free(tmp);
 	}
 }
+
 void	free_redirs(t_redir *head)
 {
 	t_redir	*tmp;
@@ -71,6 +85,7 @@ void	free_redirs(t_redir *head)
 		free(tmp);
 	}
 }
+
 void	free_cmds(t_cmd *head)
 {
 	t_cmd	*tmp;
@@ -81,8 +96,6 @@ void	free_cmds(t_cmd *head)
 		head = head->next;
 		if (tmp->args)
 			free_split(tmp->args);
-		// if (tmp->path)
-		// 	free(tmp->path);
 		if (tmp->redirs)
 			free_redirs(tmp->redirs);
 		free(tmp);

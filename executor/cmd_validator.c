@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_validator.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/17 12:39:11 by sandrzej          #+#    #+#             */
+/*   Updated: 2025/12/17 12:39:34 by sandrzej         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./../minishell.h"
 
 static char	*validate_as_is(t_shell *shell, char *name)
@@ -58,8 +70,8 @@ static char	*validate_as_user(t_shell *shell, t_cmd *cmd)
 
 void	validate_command(t_shell *shell, t_cmd *cmd)
 {
-	char *path;
-	char *name;
+	char	*path;
+	char	*name;
 
 	path = NULL;
 	name = cmd->args[0];

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/17 12:34:40 by sandrzej          #+#    #+#             */
+/*   Updated: 2025/12/17 12:34:42 by sandrzej         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	is_redir_token(t_token_type type)
@@ -8,9 +20,9 @@ int	is_redir_token(t_token_type type)
 
 t_cmd	*parse_tokens(t_token *tokens)
 {
-	t_cmd *head;
-	t_cmd *curr;
-	t_token *tmp;
+	t_cmd	*head;
+	t_cmd	*curr;
+	t_token	*tmp;
 
 	head = NULL;
 	curr = init_cmd();

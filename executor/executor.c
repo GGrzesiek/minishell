@@ -1,15 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/17 12:37:49 by sandrzej          #+#    #+#             */
+/*   Updated: 2025/12/17 12:38:51 by sandrzej         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./../minishell.h"
 
-extern int	g_SHLVL;
+extern int	g_shlvl;
 
+/*
+	cmd->fdout = p[1];      // write end
+	cmd->next->fdin = p[0]; // read end
+*/
 void	open_pipe(t_shell *shell, t_cmd *cmd)
 {
 	int	p[2];
 
 	if (pipe(p) == -1)
 		end(shell, "pipe fail");
-	cmd->fdout = p[1];      // write end
-	cmd->next->fdin = p[0]; // read end
+	cmd->fdout = p[1];
+	cmd->next->fdin = p[0];
 }
 
 int	process_in(t_cmd *cmd, char *file)
@@ -118,7 +134,7 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 int	execute_cmd_chain(t_shell *shell, t_cmd *cmd)
 {
 	cmd->fdin = STDIN_FILENO;
-	g_SHLVL++;
+	g_shlvl++;
 	while (1)
 	{
 		cmd->fdout = STDOUT_FILENO;
@@ -138,6 +154,6 @@ int	execute_cmd_chain(t_shell *shell, t_cmd *cmd)
 	}
 	while (wait(0) >= 0)
 		;
-	g_SHLVL--;
+	g_shlvl--;
 	return (0);
 }
