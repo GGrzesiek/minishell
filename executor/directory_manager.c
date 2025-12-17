@@ -34,7 +34,7 @@ int	change_directory(t_shell *shell, t_cmd *cmd)
 	{
 		to = env_get(&shell->env_list, "HOME");
 		if (!to)
-			return (1);
+			to = "";
 	}
 	chdir(to);
 	key = ft_strjoin("PWD=", getcwdir(shell));

@@ -33,7 +33,7 @@ void	free_env_lst(t_env *lst)
 
 void	end(t_shell *shell, char *msg)
 {
-  tcsetattr(STDIN_FILENO, TCSANOW, &shell->t);
+	tcsetattr(STDIN_FILENO, TCSANOW, &shell->t);
 	rl_clear_history();
 	free_cmds(shell->cmds);
 	free_env_lst(shell->env_list);

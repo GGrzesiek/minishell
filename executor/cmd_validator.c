@@ -33,7 +33,7 @@ static char	*validate_as_rel(t_shell *shell, t_cmd *cmd)
 	char	*cwd_dir;
 
 	cwd_dir = env_get(&shell->env_list, "PWD");
-  part = ft_substr(cmd->args[0], 1, ft_strlen(cmd->args[0]));
+	part = ft_substr(cmd->args[0], 1, ft_strlen(cmd->args[0]));
 	path = ft_strjoin(cwd_dir, part);
 	free(part);
 	return (path);
@@ -72,7 +72,7 @@ static char	*validate_as_user(t_shell *shell, t_cmd *cmd)
 	char	*user_dir;
 
 	user_dir = env_get(&shell->env_list, "HOME");
-  part = ft_substr(cmd->args[0], 1, ft_strlen(cmd->args[0]));
+	part = ft_substr(cmd->args[0], 1, ft_strlen(cmd->args[0]));
 	path = ft_strjoin(user_dir, part);
 	free(part);
 	return (path);
@@ -86,20 +86,20 @@ void	validate_command(t_shell *shell, t_cmd *cmd)
 	path = NULL;
 	name = cmd->args[0];
 	if (ft_strncmp("./", name, 2) == 0)
-  {
+	{
 		path = validate_as_rel(shell, cmd);
-  }
+	}
 	else if (ft_strncmp("~/", name, 2) == 0)
-  {
+	{
 		path = validate_as_user(shell, cmd);
-  }
+	}
 	else if (ft_strncmp("/", name, 1) == 0)
-  {
+	{
 		path = validate_as_is(shell, name);
-  }
+	}
 	else
-  {
+	{
 		path = validate_in_paths(shell, name);
-  }
+	}
 	cmd->path = path;
 }

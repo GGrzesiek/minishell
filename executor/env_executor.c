@@ -12,29 +12,30 @@
 
 #include "./../minishell.h"
 
-static t_env *find_great(t_env	*curr, char	*last_key)
+static t_env	*find_great(t_env *curr, char *last_key)
 {
-  t_env	*great_node;
+	t_env	*great_node;
 	int		is_great;
 
-  great_node = NULL;
-  while (curr)
-  {
-    is_great = 0;
-    if (last_key == NULL || ft_strncmp(curr->key, last_key, INT_MAX) > 0)
-      is_great = 1;
-    if (is_great && (great_node == NULL || ft_strncmp(curr->key, great_node->key, INT_MAX) < 0))
-      great_node = curr;
-    curr = curr->next;
-  }
-  return (great_node);
+	great_node = NULL;
+	while (curr)
+	{
+		is_great = 0;
+		if (last_key == NULL || ft_strncmp(curr->key, last_key, INT_MAX) > 0)
+			is_great = 1;
+		if (is_great && (great_node == NULL || ft_strncmp(curr->key,
+					great_node->key, INT_MAX) < 0))
+			great_node = curr;
+		curr = curr->next;
+	}
+	return (great_node);
 }
 
 static void	runn_child(t_shell *shell)
 {
 	t_env	*curr;
-  char	*last_key;
-  t_env *great_node;
+	char	*last_key;
+	t_env	*great_node;
 
 	last_key = NULL;
 	while (1)

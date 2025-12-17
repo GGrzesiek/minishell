@@ -14,11 +14,11 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
-# include <limits.h>
 # include <curses.h>
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -58,11 +58,11 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
- // for heredoc store the content of the file in char *file.
+// for heredoc store the content of the file in char *file.
 typedef struct s_redir
 {
 	t_token_type	type;
-	char *file;
+	char			*file;
 	struct s_redir	*next;
 }					t_redir;
 
@@ -79,7 +79,7 @@ typedef struct s_cmd
 typedef struct s_shell
 {
 	char			**envp;
-  struct termios t;
+	struct termios	t;
 	t_env			*env_list;
 	char			**paths;
 	int				exit_code;
@@ -88,7 +88,7 @@ typedef struct s_shell
 
 void				init_shell(t_shell *shell, char **envp);
 void				init_path(t_shell *shell);
-void	setup_signals(t_shell *shell);
+void				setup_signals(t_shell *shell);
 
 /* main funciton to free everything and end the program at any time */
 void				end(t_shell *shell, char *msg);
