@@ -37,7 +37,7 @@ int	unset(t_shell *shell, t_cmd *cmd)
 	key = cmd->args[1];
 	if (key)
 	{
-		return(env_del(&shell->env_list, key));
+		return (env_del(&shell->env_list, key));
 	}
 	return (0);
 }

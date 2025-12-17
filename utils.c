@@ -47,4 +47,3 @@ int	ft_isnumber(char *str)
 	}
 	return (1);
 }
-

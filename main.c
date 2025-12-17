@@ -25,10 +25,10 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	init_shell(&shell, envp);
 	setup_signals(&shell);
-  errno = 0;
+	errno = 0;
 	while (1)
 	{
-    shell.exit_code=0;
+		shell.exit_code = 0;
 		line = readline("mini(s)hell> ");
 		if (!line)
 			end(&shell, NULL);
@@ -37,18 +37,19 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 			tokens = tokenizer(line);
 			cmds = parse_tokens(tokens);
-      if (ft_strncmp(line, "echo $?", 7) == 0 || ft_strncmp(line, "$?", 2) == 0)
-      {
-        printf("%d\n", shell.exit_code);
-      }
-      else
-      {
-        execute_cmd_chain(&shell, cmds);
-        // printf("[%d]\n", shell.exit_code);
-        free_cmds(cmds);
-        free_tokens(tokens);
-        free(line);
-      }
+			if (ft_strncmp(line, "echo $?", 7) == 0 || ft_strncmp(line, "$?",
+					2) == 0)
+			{
+				printf("%d\n", shell.exit_code);
+			}
+			else
+			{
+				execute_cmd_chain(&shell, cmds);
+				// printf("[%d]\n", shell.exit_code);
+				free_cmds(cmds);
+				free_tokens(tokens);
+				free(line);
+			}
 		}
 	}
 }
