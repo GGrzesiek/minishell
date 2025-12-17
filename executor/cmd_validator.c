@@ -49,6 +49,7 @@ static char	*validate_in_paths(t_shell *shell, char *name)
 	path = NULL;
 	paths = shell->paths;
 	if (paths)
+	{
 		while (paths[j])
 		{
 			path = ft_strjoin(paths[j], name);
@@ -60,6 +61,7 @@ static char	*validate_in_paths(t_shell *shell, char *name)
 			path = NULL;
 			j++;
 		}
+	}
 	else
 		path = validate_as_is(shell, name);
 	return (path);

@@ -102,6 +102,7 @@ void				validate_command(t_shell *shell, t_cmd *cmd);
 int					process_native_command(t_shell *shell, t_cmd *cmd);
 
 /* Piping */
+int					open_redir(t_shell *shell, t_cmd *cmd);
 void				write_all(t_shell *shell, int fd, char *content);
 char				*read_all(t_shell *shell, int fd);
 
@@ -130,6 +131,7 @@ t_redir				*new_redir(t_token_type type, char *filename);
 int					add_arg(t_cmd *cmd, char *arg);
 
 /* Env variable manager */
+void				print_sorted_declare_env(t_shell *shell, t_cmd *cmd);
 t_env				*new_env_node(char *str);
 int					env_add_back(t_env **head, t_env *new_node);
 int					env_del(t_env **head, char *key);

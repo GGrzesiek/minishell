@@ -6,12 +6,15 @@ SRCS = \
 	executor/echo.c \
 	executor/cmd_validator.c \
 	executor/env_executor.c \
-	env_manager.c \
 	executor/file_manager.c \
 	executor/directory_manager.c \
-	mem_utils.c \
 	executor/native_executor.c \
 	executor/executor.c \
+	executor/redir_processor.c \
+	executor/export_sorter.c \
+	env_manager.c \
+	mem_utils.c \
+	mem_utils_2.c \
 	init.c \
 	signals.c \
 	utils.c \
