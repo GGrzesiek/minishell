@@ -109,12 +109,14 @@ char				*read_all(t_shell *shell, int fd);
 /* Built-ins */
 int					change_directory(t_shell *shell, t_cmd *cmd);
 int					export(t_shell *shell, t_cmd *cmd);
+int         process_end(t_shell *shell, t_cmd *cmd);
 int					unset(t_shell *shell, t_cmd *cmd);
 int					print_env(t_shell *shell, t_cmd *cmd);
 int					pwd(t_shell *shell, t_cmd *cmd);
 int					recho(t_shell *shell, t_cmd *cmd);
 
 /* Utils */
+int	ft_isnumber(char *str);
 void				end(t_shell *shell, char *msg);
 void				free_split(char **sp);
 void				free_env(t_env *node);
@@ -136,5 +138,6 @@ t_env				*new_env_node(char *str);
 int					env_add_back(t_env **head, t_env *new_node);
 int					env_del(t_env **head, char *key);
 char				*env_get(t_env **head, char *key);
+
 
 #endif

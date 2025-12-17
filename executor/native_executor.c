@@ -53,7 +53,7 @@ int	process_native_command(t_shell *shell, t_cmd *cmd)
 		execute_native_command(shell, cmd);
 		free(cmd->path);
 	}
-	else
+	if (errno)
 		return (perror(cmd->args[0]), 1);
 	return (0);
 }

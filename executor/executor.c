@@ -38,7 +38,7 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 	if (!name)
 		return (close_pipe(cmd), 1);
 	if (ft_strncmp("exit", name, 5) == 0)
-		end(shell, NULL);
+    return (process_end(shell, cmd));
 	else if (ft_strncmp("cd", name, 3) == 0)
 		return (change_directory(shell, cmd));
 	else if (ft_strncmp("pwd", name, 4) == 0)
@@ -53,11 +53,11 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 		return (recho(shell, cmd));
 	else
 		return (process_native_command(shell, cmd));
-	return (0);
 }
 
 int	execute_cmd_chain(t_shell *shell, t_cmd *cmd)
 {
+  int status;
 	cmd->fdin = STDIN_FILENO;
 	g_shlvl++;
 	while (1)
@@ -66,9 +66,9 @@ int	execute_cmd_chain(t_shell *shell, t_cmd *cmd)
 		if (cmd->next)
 			open_pipe(shell, cmd);
 		if (open_redir(shell, cmd))
-			return (close_pipe(cmd), 1);
+      shell->exit_code=1;
 		if (execute_command(shell, cmd))
-			return (close_pipe(cmd), 1);
+      shell->exit_code=1;
 		if (cmd->fdin != STDIN_FILENO)
 			close(cmd->fdin);
 		if (cmd->fdout != STDOUT_FILENO)
@@ -77,8 +77,8 @@ int	execute_cmd_chain(t_shell *shell, t_cmd *cmd)
 			break ;
 		cmd = cmd->next;
 	}
-	while (wait(0) >= 0)
-		;
+	while (wait(&status) > 0)
+    shell->exit_code=status;
 	g_shlvl--;
 	return (0);
 }

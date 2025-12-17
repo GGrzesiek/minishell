@@ -66,3 +66,19 @@ int	recho(t_shell *shell, t_cmd *cmd)
 	}
 	return (0);
 }
+
+int process_end(t_shell *shell, t_cmd *cmd)
+{
+  char *exit_code;
+
+  exit_code = cmd->args[1];
+  if (exit_code)
+  {
+    if (ft_isnumber(exit_code))
+    {
+      shell->exit_code = ft_atoi(exit_code);
+    }
+  }
+  end(shell, NULL);
+  return (0);
+}

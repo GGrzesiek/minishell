@@ -37,15 +37,14 @@ int	change_directory(t_shell *shell, t_cmd *cmd)
 			to = "";
 	}
 	chdir(to);
+  if (errno)
+		return (perror(cmd->args[0]), 1);
 	key = ft_strjoin("PWD=", getcwdir(shell));
 	new_node = new_env_node(key);
 	free(key);
 	if (!new_node)
 		end(shell, "chdir new node malloc error\n");
-	env_add_back(&shell->env_list, new_node);
-	if (errno)
-		return (perror(cmd->args[0]), 1);
-	return (0);
+	return(env_add_back(&shell->env_list, new_node));
 }
 
 static void	run_child(t_shell *shell, t_cmd *cmd)
