@@ -31,3 +31,15 @@ int	ft_isnumber(char *str)
 	}
 	return (1);
 }
+
+
+void shperror(char *a, char *msg)
+{
+  if (a)
+  {
+    write(2, a, ft_strlen(a));
+    write(2, ": ", 2);
+    write(2, msg, ft_strlen(msg));
+    write(2, "\n", 1);
+  }
+}

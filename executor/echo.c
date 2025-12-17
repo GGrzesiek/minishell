@@ -70,14 +70,18 @@ int	recho(t_shell *shell, t_cmd *cmd)
 int	process_end(t_shell *shell, t_cmd *cmd)
 {
 	char	*exit_code;
+  
 
 	exit_code = cmd->args[1];
 	if (exit_code)
 	{
+    if (cmd->args[2])
+      return (shperror(cmd->args[0], " too many arguments"), 1);
 		if (ft_isnumber(exit_code))
 		{
 			shell->exit_code = ft_atoi(exit_code);
-		}
+		} else
+      return (shperror(cmd->args[0], " numeric argument required"), 1);
 	}
 	end(shell, NULL);
 	return (0);

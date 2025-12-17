@@ -98,7 +98,7 @@ void				free_cmds(t_cmd *head);
 void				free_tokens(t_token *head);
 /* Cmd processing */
 int					execute_cmd_chain(t_shell *shell, t_cmd *cmd);
-void				validate_command(t_shell *shell, t_cmd *cmd);
+int	validate_command(t_shell *shell, t_cmd *cmd);
 int					process_native_command(t_shell *shell, t_cmd *cmd);
 
 /* Piping */
@@ -116,6 +116,7 @@ int					pwd(t_shell *shell, t_cmd *cmd);
 int					recho(t_shell *shell, t_cmd *cmd);
 
 /* Utils */
+void shperror(char *a, char *msg);
 int					ft_isnumber(char *str);
 void				end(t_shell *shell, char *msg);
 void				free_split(char **sp);

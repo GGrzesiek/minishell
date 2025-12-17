@@ -45,14 +45,22 @@ void	execute_native_command(t_shell *shell, t_cmd *cmd)
 		run_child(shell, cmd);
 }
 
+int is_directory(const char *path)
+{
+    struct stat path_stat;
+    stat(path, &path_stat);
+    return S_ISDIR(path_stat.st_mode);
+}
+
 int	process_native_command(t_shell *shell, t_cmd *cmd)
 {
-	validate_command(shell, cmd);
+	if (validate_command(shell, cmd))
+    return (shell->exit_code=126, 1);
 	if (cmd->path)
 	{
 		execute_native_command(shell, cmd);
 		free(cmd->path);
 	} else
-		return (perror(cmd->args[0]), 1);
+		return (shperror(cmd->args[0], " command not found"), shell->exit_code=127, 1);
 	return (0);
 }

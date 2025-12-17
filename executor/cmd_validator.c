@@ -80,7 +80,19 @@ static char	*validate_as_user(t_shell *shell, t_cmd *cmd)
 	return (path);
 }
 
-void	validate_command(t_shell *shell, t_cmd *cmd)
+int validate_access(t_cmd *cmd, char *path)
+{
+  struct stat path_stat;
+
+  stat(path, &path_stat);
+  if (S_ISDIR(path_stat.st_mode))
+    return (free(cmd->path), shperror(cmd->args[0], " Is a directory"), 1);
+  if (access(cmd->path, X_OK) == -1)
+    return (free(cmd->path), shperror(cmd->args[0], " Permission denied"), 1);
+  return (0);
+}
+
+int	validate_command(t_shell *shell, t_cmd *cmd)
 {
 	char	*path;
 	char	*name;
@@ -104,4 +116,5 @@ void	validate_command(t_shell *shell, t_cmd *cmd)
 		path = validate_in_paths(shell, name);
 	}
 	cmd->path = path;
+  return (validate_access(cmd, path));
 }

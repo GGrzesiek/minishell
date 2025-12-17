@@ -23,6 +23,7 @@ int	export(t_shell *shell, t_cmd *cmd)
 		new_node = new_env_node(key);
 		if (!new_node)
 			end(shell, "envp new node malloc error\n");
+
 		return (env_add_back(&shell->env_list, new_node));
 	}
 	else

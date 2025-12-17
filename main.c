@@ -28,7 +28,6 @@ int	main(int argc, char **argv, char **envp)
 	errno = 0;
 	while (1)
 	{
-		shell.exit_code = 0;
 		line = readline("mini(s)hell> ");
 		if (!line)
 			end(&shell, NULL);
@@ -44,6 +43,7 @@ int	main(int argc, char **argv, char **envp)
 			}
 			else
 			{
+        shell.exit_code = 0;
 				execute_cmd_chain(&shell, cmds);
 				// printf("[%d]\n", shell.exit_code);
 				free_cmds(cmds);

@@ -56,7 +56,7 @@ int	env_add_back(t_env **head, t_env *new_node)
 {
 	if (!head || !new_node)
 		return (1);
-	if (!new_node->key || !new_node->value)
+	if (!new_node->key || !*new_node->key)
 		return (free_env(new_node), 1);
 	if (!*head)
 		return (*head = new_node, 0);
@@ -90,7 +90,7 @@ int	env_del(t_env **head, char *key)
 		prev = curr;
 		curr = curr->next;
 	}
-	return (1);
+	return (0);
 }
 
 char	*env_get(t_env **head, char *key)
