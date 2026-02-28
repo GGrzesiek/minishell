@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:34:33 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 12:34:35 by sandrzej         ###   ########.fr       */
+/*   Updated: 2026/02/28 15:05:12 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void				free_cmds(t_cmd *head);
 void				free_tokens(t_token *head);
 /* Cmd processing */
 int					execute_cmd_chain(t_shell *shell, t_cmd *cmd);
-int	validate_command(t_shell *shell, t_cmd *cmd);
+int					validate_command(t_shell *shell, t_cmd *cmd);
 int					process_native_command(t_shell *shell, t_cmd *cmd);
 
 /* Piping */
@@ -128,11 +128,13 @@ t_cmd				*init_single_cmd(t_shell *shell, char *line);
 t_token				*tokenizer(char *line);
 t_cmd				*init_cmd(void);
 void				cmd_add_back(t_cmd **head, t_cmd *new_cmd);
-t_cmd				*parse_tokens(t_token *tokens);
+t_cmd				*parse_tokens(t_shell *shell, t_token *tokens);
 void				redir_add_back(t_redir **head, t_redir *new);
 t_redir				*new_redir(t_token_type type, char *filename);
 int					add_arg(t_cmd *cmd, char *arg);
-
+char				*append_char(char *str, char c);
+char				*append_str(char *str, char *append);
+char				*expand_token(t_shell *shell, char *str);
 /* Env variable manager */
 void				print_sorted_declare_env(t_shell *shell, t_cmd *cmd);
 t_env				*new_env_node(char *str);

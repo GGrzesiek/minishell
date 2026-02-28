@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:40:04 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 12:40:05 by sandrzej         ###   ########.fr       */
+/*   Updated: 2026/02/28 15:45:21 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	recho(t_shell *shell, t_cmd *cmd)
 		end(shell, "fork failed\n");
 	else if (pid == 0)
 	{
-		run_child(shell, cmd);
+		shell->exit_code = run_child(shell, cmd);
 		end(shell, NULL);
 	}
 	else

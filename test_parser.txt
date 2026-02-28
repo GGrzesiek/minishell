@@ -1,0 +1,36 @@
+echo "=== TEST 1: Podstawowe zmienne ==="
+echo $USER
+echo $?
+echo $NIEZNANA_ZMIENNA
+echo $USER $USER
+echo $
+
+echo "=== TEST 2: Pojedyncze cudzyslowy ==="
+echo '$USER'
+echo '$?'
+echo '     spacje    '
+
+echo "=== TEST 3: Podwojne cudzyslowy ==="
+echo "Witaj, $USER!"
+echo "Kod bledu to: $?"
+echo "Zmienna $NIEZNANA to pustość"
+
+echo "=== TEST 4: Mieszanie cudzyslowow ==="
+echo "'Pojedyncze w podwojnych'"
+echo '"Podwojne w pojedynczych"'
+echo "Czesc $USER,"' jak tam $USER?'
+echo "A"'B'"C"
+
+echo "=== TEST 5: Status bledu ($?) ==="
+nieistniejaca_komenda
+echo $?
+echo $?
+
+echo "=== TEST 6: Pliki ze spacjami ==="
+echo "To jest testowy tekst" > "moj dziwny plik.txt"
+cat "moj dziwny plik.txt"
+ls -l | grep "dziwny"
+rm "moj dziwny plik.txt"
+
+echo "=== KONIEC TESTOW ==="
+exit

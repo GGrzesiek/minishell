@@ -42,17 +42,16 @@ getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # Faza 2: Podstawy (Praca równoległa - 3-5 dni)
 [V] Osoba A: Pisze tokenizer, który dzieli input po spacjach, ale ignoruje spacje w cudzysłowach.
 [v] Osoba B: Pisze prosty executor, który potrafi uruchomić jedną komendę (bez pipe'ów), np. /bin/ls. Implementuje szukanie w PATH.
-[ ] Osoba A: Pisze tokenizer, który dzieli input po spacjach, ale ignoruje spacje w cudzysłowach.
 [v] Osoba B: Pisze prosty executor, który potrafi uruchomić jedną komendę (bez pipe'ów), np. /bin/ls. Implementuje szukanie w PATH.
 
 # Faza 3: Integracja Logiki (Praca równoległa - 5-7 dni)
-[ ] Osoba A: Implementuje obsługę $? (replace as errno) i zmiennych środowiskowych ($HOME itp.). 
+[v] Osoba A: Implementuje obsługę $? (replace as errno) i zmiennych środowiskowych ($HOME itp.). 
 [v] Dodaje logikę export i unset.
 [v] Osoba B: Implementuje przekierowania proste (<, >). 
 [v] Implementuje cd (zmienia katalog roboczy procesu) i pwd.
 
 # Faza 4: "The Heavy Lifting" (Najtrudniejszy etap - 5-7 dni)
-[ ] Osoba A: Dopracowuje parser pod kątem dziwnych przypadków (np. echo "sdfsdf"'$USER' > plik). Przygotowuje listę komend dla potoków (linked list of commands).
+[v] Osoba A: Dopracowuje parser pod kątem dziwnych przypadków (np. echo "sdfsdf"'$USER' > plik). Przygotowuje listę komend dla potoków (linked list of commands).
 [v] Osoba B: Implementuje Pipes (|). 
 [v] Implementuje heredoc (<<).
 

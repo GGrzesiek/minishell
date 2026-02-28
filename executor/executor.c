@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:37:49 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 12:38:51 by sandrzej         ###   ########.fr       */
+/*   Updated: 2026/02/28 15:44:26 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ int	execute_cmd_chain(t_shell *shell, t_cmd *cmd)
 		cmd = cmd->next;
 	}
 	while (wait(&status) > 0)
-    if (status > 0 && status < 256)
-		  shell->exit_code = status;
+	{
+		if (WIFEXITED(status))
+			shell->exit_code = WEXITSTATUS(status);
+	}
 	g_shlvl--;
 	return (0);
 }

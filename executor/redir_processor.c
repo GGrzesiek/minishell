@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_processor.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 15:50:17 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 15:50:19 by sandrzej         ###   ########.fr       */
+/*   Updated: 2026/02/28 13:35:02 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,28 @@ static int	process_in(t_shell *shell, t_cmd *cmd, char *file)
 	return (0);
 }
 
-static int	process_heredoc(t_shell *shell, t_cmd *cmd, char *file)
+static int	process_heredoc(t_shell *shell, t_cmd *cmd, char *delimiter)
 {
-	int	p[2];
+	int		p[2];
+	char	*line;
 
 	if (cmd->fdin != STDIN_FILENO)
 		close(cmd->fdin);
 	if (pipe(p) == -1)
 		end(shell, "pipe fail");
-	write_all(shell, p[1], file);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
+		{
+			if (line)
+				free(line);
+			break ;
+		}
+		write_all(shell, p[1], line);
+		write_all(shell, p[1], "\n");
+		free(line);
+	}
 	close(p[1]);
 	cmd->fdin = p[0];
 	return (0);

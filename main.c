@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:34:17 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 12:34:21 by sandrzej         ###   ########.fr       */
+/*   Updated: 2026/02/28 15:30:08 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,12 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(line);
 			tokens = tokenizer(line);
-			cmds = parse_tokens(tokens);
-			if (ft_strncmp(line, "echo $?", 7) == 0 || ft_strncmp(line, "$?",
-					2) == 0)
-			{
-				printf("%d\n", shell.exit_code);
-			}
-			else
-			{
-        shell.exit_code = 0;
-				execute_cmd_chain(&shell, cmds);
-				// printf("[%d]\n", shell.exit_code);
-				free_cmds(cmds);
-				free_tokens(tokens);
-				free(line);
-			}
+			cmds = parse_tokens(&shell, tokens);
+			execute_cmd_chain(&shell, cmds);
+			// printf("[%d]\n", shell.exit_code);
+			free_cmds(cmds);
+			free_tokens(tokens);
 		}
+		free(line);
 	}
 }

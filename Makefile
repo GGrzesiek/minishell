@@ -20,7 +20,8 @@ SRCS = \
 	utils.c \
 	lexer.c \
 	parser.c \
-	parser_utils.c
+	parser_utils.c \
+	parser_utils2.c
 
 MOBJ = $(MAIN:.c=.o)
 OBJS = $(SRCS:.c=.o)
