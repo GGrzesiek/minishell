@@ -6,7 +6,7 @@
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:34:40 by sandrzej          #+#    #+#             */
-/*   Updated: 2026/02/28 15:33:49 by emilka           ###   ########.fr       */
+/*   Updated: 2026/02/28 16:15:33 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_cmd	*parse_tokens(t_shell *shell, t_token *tokens)
 	t_cmd	*curr;
 	t_token	*tmp;
 
-	// NOWOŚĆ: Najpierw przechodzimy przez tokeny i podmieniamy ich tekst
+	// zmiana: najpierw przechodzimy przez tokeny i podmieniamy ich tekst
 	// na wersję rozwiniętą (bez cudzysłowów, z podmienionym $USER itd.)
 	tmp = tokens;
 	while (tmp)
@@ -32,13 +32,12 @@ t_cmd	*parse_tokens(t_shell *shell, t_token *tokens)
 		if (tmp->type == TOKEN_WORD)
 		{
 			char *expanded = expand_token(shell, tmp->value);
-			free(tmp->value); // Zwalniamy starą, "brudną" wersję z Lexera
-			tmp->value = expanded; // Podmieniamy na nową, czystą
+			free(tmp->value); 
+			tmp->value = expanded;
 		}
 		tmp = tmp->next;
 	}
 
-	// Reszta kodu zostaje w 100% tak, jak mieliście oryginalnie!
 	head = NULL;
 	curr = init_cmd();
 	if (!curr)
@@ -59,7 +58,6 @@ t_cmd	*parse_tokens(t_shell *shell, t_token *tokens)
 		{
 			if (tmp->next && tmp->next->type == TOKEN_WORD)
 			{
-				// Tutaj tmp->next->value jest JUŻ rozwinięte przez pętlę wyżej!
 				redir_add_back(&curr->redirs, new_redir(tmp->type,
 						tmp->next->value));
 				tmp = tmp->next;
@@ -69,7 +67,6 @@ t_cmd	*parse_tokens(t_shell *shell, t_token *tokens)
 		}
 		else if (tmp->type == TOKEN_WORD)
 		{
-			// Tutaj tmp->value też jest JUŻ rozwinięte!
 			add_arg(curr, tmp->value);
 		}
 		tmp = tmp->next;
