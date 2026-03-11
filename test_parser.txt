@@ -32,5 +32,85 @@ cat "moj dziwny plik.txt"
 ls -l | grep "dziwny"
 rm "moj dziwny plik.txt"
 
+echo "=== TEST 7: Pipe'i (|) ==="
+echo "hello world" | wc -w
+ls | grep minishell
+echo "test" | cat | wc -c
+
+echo "=== TEST 8: Redirecty wejscia (<) ==="
+echo "linia testowa" > test_input.txt
+cat < test_input.txt
+rm test_input.txt
+
+echo "=== TEST 9: Append (>>) ==="
+echo "linia 1" > test_append.txt
+echo "linia 2" >> test_append.txt
+cat test_append.txt
+rm test_append.txt
+
+echo "=== TEST 10: Kombinacje redirectow ==="
+echo "test output" > out1.txt
+echo "test append" >> out1.txt
+wc -l < out1.txt
+rm out1.txt
+
+echo "=== TEST 11: Built-in: pwd ==="
+pwd
+
+echo "=== TEST 12: Built-in: cd ==="
+cd /tmp
+pwd
+cd -
+pwd
+
+echo "=== TEST 13: Built-in: export ==="
+export ZMIENNA_TEST="wartosc_testowa"
+echo $ZMIENNA_TEST
+export ZMIENNA_TEST="nowa_wartosc"
+echo $ZMIENNA_TEST
+
+echo "=== TEST 14: Built-in: unset ==="
+export TEMP_VAR="do_usuniecia"
+echo $TEMP_VAR
+unset TEMP_VAR
+echo "Zmienna usunięta: $TEMP_VAR"
+
+echo "=== TEST 15: Built-in: env ==="
+env | head -5
+
+echo "=== TEST 16: Zagniezdzone cytaty ==="
+echo "To jest \"cytowanie w cytowaniu\""
+echo 'Test bez interpolacji: $USER'
+echo "Kombinacja: '$USER'"
+
+echo "=== TEST 17: Wielokrotne polecenia ==="
+echo "test1" && echo "test2"
+echo "test3" ; echo "test4"
+
+echo "=== TEST 18: Wiele pipe'ow ==="
+echo "test data" | wc -w | cat
+
+echo "=== TEST 19: Spacje i tabulatory ==="
+echo    "   wiele spacji   "
+echo	"z tabulatorem"
+
+echo "=== TEST 20: Znaki specjalne ==="
+echo "!@#$%^&*()"
+echo "backtick\` test"
+echo "echo test" | sh
+
+echo "=== TEST 21: Puste polecenia ==="
+echo ""
+echo ''
+
+echo "=== TEST 22: Status ostatniego polecenia ==="
+true
+echo "Po true: $?"
+false
+echo "Po false: $?"
+
+echo "=== TEST 23: Duze ilosci argumentow ==="
+echo arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10
+
 echo "=== KONIEC TESTOW ==="
 exit

@@ -19,6 +19,7 @@ SRCS = \
 	signals.c \
 	utils.c \
 	lexer.c \
+	lexer_utils.c\
 	parser.c \
 	parser_utils.c \
 	parser_utils2.c

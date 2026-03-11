@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:39:44 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 12:39:46 by sandrzej         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:41:45 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	export(t_shell *shell, t_cmd *cmd)
 		new_node = new_env_node(key);
 		if (!new_node)
 			end(shell, "envp new node malloc error\n");
-
 		return (env_add_back(&shell->env_list, new_node));
 	}
 	else

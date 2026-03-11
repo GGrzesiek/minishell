@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   native_executor.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:39:55 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 12:39:58 by sandrzej         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:44:50 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,18 @@ void	execute_native_command(t_shell *shell, t_cmd *cmd)
 		run_child(shell, cmd);
 }
 
-int is_directory(const char *path)
+int	is_directory(const char *path)
 {
-    struct stat path_stat;
-    stat(path, &path_stat);
-    return S_ISDIR(path_stat.st_mode);
+	struct stat	path_stat;
+
+	stat(path, &path_stat);
+	return (S_ISDIR(path_stat.st_mode));
 }
 
 int	process_native_command(t_shell *shell, t_cmd *cmd)
 {
 	if (validate_command(shell, cmd))
-    return (1);
+		return (1);
 	if (cmd->path)
 	{
 		execute_native_command(shell, cmd);

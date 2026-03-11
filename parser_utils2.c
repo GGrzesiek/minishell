@@ -6,7 +6,7 @@
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 14:57:09 by emilka            #+#    #+#             */
-/*   Updated: 2026/02/28 16:20:19 by emilka           ###   ########.fr       */
+/*   Updated: 2026/03/11 13:30:00 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*append_str(char *str, char *append)
 	free(str);
 	return (new_str);
 }
+
 static char	*handle_dollar(t_shell *shell, char *str, int *i, char *res)
 {
 	int		start;
@@ -74,25 +75,36 @@ static char	*handle_dollar(t_shell *shell, char *str, int *i, char *res)
 	return (res);
 }
 
+static int	update_quotes(char c, int *in_sq, int *in_dq)
+{
+	if (c == '\'' && !(*in_dq))
+	{
+		*in_sq = !(*in_sq);
+		return (1);
+	}
+	if (c == '\"' && !(*in_sq))
+	{
+		*in_dq = !(*in_dq);
+		return (1);
+	}
+	return (0);
+}
+
 char	*expand_token(t_shell *shell, char *str)
 {
-	char	*res = ft_strdup("");
-	int		i = 0;
-	int		in_sq = 0;
-	int		in_dq = 0;
+	char	*res;
+	int		i;
+	int		in_sq;
+	int		in_dq;
 
+	i = 0;
+	in_sq = 0;
+	in_dq = 0;
+	res = ft_strdup("");
 	while (str[i])
 	{
-		if (str[i] == '\'' && !in_dq)
-		{
-			in_sq = !in_sq;
+		if (update_quotes(str[i], &in_sq, &in_dq))
 			i++;
-		}
-		else if (str[i] == '\"' && !in_sq)
-		{
-			in_dq = !in_dq;
-			i++;
-		}
 		else if (str[i] == '$' && !in_sq)
 			res = handle_dollar(shell, str, &i, res);
 		else

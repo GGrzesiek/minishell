@@ -6,7 +6,7 @@
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:34:33 by sandrzej          #+#    #+#             */
-/*   Updated: 2026/02/28 15:05:12 by emilka           ###   ########.fr       */
+/*   Updated: 2026/03/11 13:34:47 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,10 @@ int					process_end(t_shell *shell, t_cmd *cmd);
 int					unset(t_shell *shell, t_cmd *cmd);
 int					print_env(t_shell *shell, t_cmd *cmd);
 int					pwd(t_shell *shell, t_cmd *cmd);
-int					recho(t_shell *shell, t_cmd *cmd);
+int					recho(t_shell *shell, t_cmd *cmd);				
 
 /* Utils */
-void shperror(char *a, char *msg);
+void				shperror(char *a, char *msg);
 int					ft_isnumber(char *str);
 void				end(t_shell *shell, char *msg);
 void				free_split(char **sp);
@@ -135,6 +135,9 @@ int					add_arg(t_cmd *cmd, char *arg);
 char				*append_char(char *str, char c);
 char				*append_str(char *str, char *append);
 char				*expand_token(t_shell *shell, char *str);
+int					is_separator(char c);
+t_token				*new_token(char *value, t_token_type type);
+void				token_add_back(t_token **head, t_token *new_t);
 /* Env variable manager */
 void				print_sorted_declare_env(t_shell *shell, t_cmd *cmd);
 t_env				*new_env_node(char *str);

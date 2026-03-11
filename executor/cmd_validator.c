@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_validator.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/17 12:39:11 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 12:39:34 by sandrzej         ###   ########.fr       */
+/*   Created: 2026/03/11 13:37:01 by emilka            #+#    #+#             */
+/*   Updated: 2026/03/11 13:37:12 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ static char	*validate_as_is(t_shell *shell, char *name)
 	return (path);
 }
 
-static char	*validate_as_rel(t_shell *shell, t_cmd *cmd)
+static char	*validate_with_env(t_shell *shell, t_cmd *cmd, char *env_var)
 {
 	char	*path;
 	char	*part;
-	char	*cwd_dir;
+	char	*base_dir;
 
-	cwd_dir = env_get(&shell->env_list, "PWD");
+	base_dir = env_get(&shell->env_list, env_var);
 	part = ft_substr(cmd->args[0], 1, ft_strlen(cmd->args[0]));
-	path = ft_strjoin(cwd_dir, part);
+	path = ft_strjoin(base_dir, part);
 	free(part);
 	return (path);
 }
@@ -67,29 +67,24 @@ static char	*validate_in_paths(t_shell *shell, char *name)
 	return (path);
 }
 
-static char	*validate_as_user(t_shell *shell, t_cmd *cmd)
+int	validate_access(t_cmd *cmd, char *path)
 {
-	char	*path;
-	char	*part;
-	char	*user_dir;
+	struct stat	path_stat;
 
-	user_dir = env_get(&shell->env_list, "HOME");
-	part = ft_substr(cmd->args[0], 1, ft_strlen(cmd->args[0]));
-	path = ft_strjoin(user_dir, part);
-	free(part);
-	return (path);
-}
-
-int validate_access(t_cmd *cmd, char *path)
-{
-  struct stat path_stat;
-
-  stat(path, &path_stat);
-  if (S_ISDIR(path_stat.st_mode))
-    return (free(cmd->path), shperror(cmd->args[0], "Is a directory"), 1);
-  if (access(cmd->path, X_OK) == -1)
-    return (free(cmd->path), shperror(cmd->args[0], "Permission denied"), 1);
-  return (0);
+	stat(path, &path_stat);
+	if (S_ISDIR(path_stat.st_mode))
+	{
+		free(cmd->path);
+		shperror(cmd->args[0], "Is a directory");
+		return (1);
+	}
+	if (access(cmd->path, X_OK) == -1)
+	{
+		free(cmd->path);
+		shperror(cmd->args[0], "Permission denied");
+		return (1);
+	}
+	return (0);
 }
 
 int	validate_command(t_shell *shell, t_cmd *cmd)
@@ -97,20 +92,26 @@ int	validate_command(t_shell *shell, t_cmd *cmd)
 	char	*path;
 	char	*name;
 
-	path = NULL;
 	name = cmd->args[0];
 	if (ft_strncmp("./", name, 2) == 0)
-		path = validate_as_rel(shell, cmd);
+		path = validate_with_env(shell, cmd, "PWD");
 	else if (ft_strncmp("~/", name, 2) == 0)
-		path = validate_as_user(shell, cmd);
+		path = validate_with_env(shell, cmd, "HOME");
 	else if (ft_strncmp("/", name, 1) == 0)
 		path = validate_as_is(shell, name);
 	else
 		path = validate_in_paths(shell, name);
 	cmd->path = path;
-  if (!path)
-    return (shperror(cmd->args[0], "command not found"), shell->exit_code=127, 1);
-  if(validate_access(cmd, path))
-    return (shell->exit_code=126, 1);
-  return (0);
+	if (!path)
+	{
+		shperror(cmd->args[0], "command not found");
+		shell->exit_code = 127;
+		return (1);
+	}
+	if (validate_access(cmd, path))
+	{
+		shell->exit_code = 126;
+		return (1);
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:37:49 by sandrzej          #+#    #+#             */
-/*   Updated: 2026/02/28 15:44:26 by emilka           ###   ########.fr       */
+/*   Updated: 2026/03/11 13:43:20 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,10 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 		return (recho(shell, cmd));
 	else
 		return (process_native_command(shell, cmd));
-} 
+}
 
-int	execute_cmd_chain(t_shell *shell, t_cmd *cmd)
+static void	execute_loop(t_shell *shell, t_cmd *cmd)
 {
-	int	status;
-
-	cmd->fdin = STDIN_FILENO;
-	g_shlvl++;
 	while (1)
 	{
 		cmd->fdout = STDOUT_FILENO;
@@ -78,11 +74,25 @@ int	execute_cmd_chain(t_shell *shell, t_cmd *cmd)
 			break ;
 		cmd = cmd->next;
 	}
+}
+
+static void	wait_children(t_shell *shell)
+{
+	int	status;
+
 	while (wait(&status) > 0)
 	{
 		if (WIFEXITED(status))
 			shell->exit_code = WEXITSTATUS(status);
 	}
+}
+
+int	execute_cmd_chain(t_shell *shell, t_cmd *cmd)
+{
+	cmd->fdin = STDIN_FILENO;
+	g_shlvl++;
+	execute_loop(shell, cmd);
+	wait_children(shell);
 	g_shlvl--;
 	return (0);
 }

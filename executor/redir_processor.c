@@ -6,7 +6,7 @@
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 15:50:17 by sandrzej          #+#    #+#             */
-/*   Updated: 2026/02/28 13:35:02 by emilka           ###   ########.fr       */
+/*   Updated: 2026/03/11 13:46:34 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ static int	process_in(t_shell *shell, t_cmd *cmd, char *file)
 {
 	int	fd;
 
-  (void) shell;
+	(void) shell;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-    return (perror(file), 1);
+		return (perror(file), 1);
 	if (cmd->fdin != STDIN_FILENO)
 		close(cmd->fdin);
 	cmd->fdin = fd;
@@ -57,10 +57,10 @@ static int	process_out(t_shell *shell, t_cmd *cmd, char *file)
 {
 	int	fd;
 
-  (void) shell;
+	(void) shell;
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-  if (fd == -1)
-    return (perror(file), 1);
+	if (fd == -1)
+		return (perror(file), 1);
 	if (cmd->fdout != STDOUT_FILENO)
 		close(cmd->fdout);
 	cmd->fdout = fd;
@@ -71,10 +71,10 @@ static int	process_append(t_shell *shell, t_cmd *cmd, char *file)
 {
 	int	fd;
 
-  (void) shell;
+	(void) shell;
 	fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-  if (fd == -1)
-    return (perror(file), 1);
+	if (fd == -1)
+		return (perror(file), 1);
 	if (cmd->fdout != STDOUT_FILENO)
 		close(cmd->fdout);
 	cmd->fdout = fd;

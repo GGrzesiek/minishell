@@ -6,7 +6,7 @@
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:40:04 by sandrzej          #+#    #+#             */
-/*   Updated: 2026/02/28 15:45:21 by emilka           ###   ########.fr       */
+/*   Updated: 2026/03/11 13:41:24 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,18 @@ int	recho(t_shell *shell, t_cmd *cmd)
 int	process_end(t_shell *shell, t_cmd *cmd)
 {
 	char	*exit_code;
-  
 
 	exit_code = cmd->args[1];
 	if (exit_code)
 	{
-    if (cmd->args[2])
-      return (shperror(cmd->args[0], " too many arguments"), 1);
+		if (cmd->args[2])
+			return (shperror(cmd->args[0], " too many arguments"), 1);
 		if (ft_isnumber(exit_code))
 		{
 			shell->exit_code = ft_atoi(exit_code);
-		} else
-      return (shperror(cmd->args[0], " numeric argument required"), 1);
+		}
+		else
+			return (shperror(cmd->args[0], " numeric argument required"), 1);
 	}
 	end(shell, NULL);
 	return (0);

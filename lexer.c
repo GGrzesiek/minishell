@@ -3,48 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/17 12:34:09 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 12:34:12 by sandrzej         ###   ########.fr       */
+/*   Created: 2026/03/11 13:16:51 by emilka            #+#    #+#             */
+/*   Updated: 2026/03/11 13:19:21 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*new_token(char *value, t_token_type type)
+static void	handle_redir_in(char *line, int *i, t_token **head)
 {
-	t_token	*new;
-
-	new = (t_token *)malloc(sizeof(t_token));
-	if (!new)
-		return (NULL);
-	new->value = value;
-	new->type = type;
-	new->next = NULL;
-	return (new);
-}
-
-void	token_add_back(t_token **head, t_token *new_token)
-{
-	t_token	*curr;
-
-	if (!head || !new_token)
-		return ;
-	if (!*head)
+	if (line[*i + 1] == '<')
 	{
-		*head = new_token;
-		return ;
+		token_add_back(head, new_token(ft_strdup("<<"), TOKEN_REDIR_HEREDOC));
+		(*i) += 2;
 	}
-	curr = *head;
-	while (curr->next)
-		curr = curr->next;
-	curr->next = new_token;
+	else
+	{
+		token_add_back(head, new_token(ft_strdup("<"), TOKEN_REDIR_IN));
+		(*i)++;
+	}
 }
 
-int	is_separator(char c)
+static void	handle_redir_out(char *line, int *i, t_token **head)
 {
-	return (c == ' ' || c == '\t' || c == '|' || c == '<' || c == '>');
+	if (line[*i + 1] == '>')
+	{
+		token_add_back(head, new_token(ft_strdup(">>"), TOKEN_REDIR_APPEND));
+		(*i) += 2;
+	}
+	else
+	{
+		token_add_back(head, new_token(ft_strdup(">"), TOKEN_REDIR_OUT));
+		(*i)++;
+	}
+}
+
+static void	handle_separator(char *line, int *i, t_token **head)
+{
+	if (line[*i] == '|')
+	{
+		token_add_back(head, new_token(ft_strdup("|"), TOKEN_PIPE));
+		(*i)++;
+	}
+	else if (line[*i] == '<')
+		handle_redir_in(line, i, head);
+	else if (line[*i] == '>')
+		handle_redir_out(line, i, head);
 }
 
 void	handle_word(char *line, int *i, t_token **head)
@@ -67,43 +73,6 @@ void	handle_word(char *line, int *i, t_token **head)
 	}
 	word = ft_substr(line, start, *i - start);
 	token_add_back(head, new_token(word, TOKEN_WORD));
-}
-
-void	handle_separator(char *line, int *i, t_token **head)
-{
-	if (line[*i] == '|')
-	{
-		token_add_back(head, new_token(ft_strdup("|"), TOKEN_PIPE));
-		(*i)++;
-	}
-	else if (line[*i] == '<')
-	{
-		if (line[*i + 1] == '<')
-		{
-			token_add_back(head, new_token(ft_strdup("<<"),
-					TOKEN_REDIR_HEREDOC));
-			(*i) += 2;
-		}
-		else
-		{
-			token_add_back(head, new_token(ft_strdup("<"), TOKEN_REDIR_IN));
-			(*i)++;
-		}
-	}
-	else if (line[*i] == '>')
-	{
-		if (line[*i + 1] == '>')
-		{
-			token_add_back(head, new_token(ft_strdup(">>"),
-					TOKEN_REDIR_APPEND));
-			(*i) += 2;
-		}
-		else
-		{
-			token_add_back(head, new_token(ft_strdup(">"), TOKEN_REDIR_OUT));
-			(*i)++;
-		}
-	}
 }
 
 t_token	*tokenizer(char *line)

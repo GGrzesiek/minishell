@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/17 12:34:17 by sandrzej          #+#    #+#             */
-/*   Updated: 2026/02/28 16:15:50 by emilka           ###   ########.fr       */
+/*   Created: 2026/03/11 13:21:43 by emilka            #+#    #+#             */
+/*   Updated: 2026/03/11 13:21:59 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,23 @@
 
 volatile int	g_shlvl = 0;
 
+static void	process_line(t_shell *shell, char *line)
+{
+	t_token	*tokens;
+	t_cmd	*cmds;
+
+	add_history(line);
+	tokens = tokenizer(line);
+	cmds = parse_tokens(shell, tokens);
+	execute_cmd_chain(shell, cmds);
+	free_cmds(cmds);
+	free_tokens(tokens);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 	char	*line;
-	t_token	*tokens;
-	t_cmd	*cmds;
 
 	(void)argc;
 	(void)argv;
@@ -32,15 +43,8 @@ int	main(int argc, char **argv, char **envp)
 		if (!line)
 			end(&shell, NULL);
 		if (*line)
-		{
-			add_history(line);
-			tokens = tokenizer(line);
-			cmds = parse_tokens(&shell, tokens);
-			execute_cmd_chain(&shell, cmds);
-			// printf("[%d]\n", shell.exit_code);
-			free_cmds(cmds);
-			free_tokens(tokens);
-		}
+			process_line(&shell, line);
 		free(line);
 	}
+	return (0);
 }
