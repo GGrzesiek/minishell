@@ -1,63 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ggrzesiek <ggrzesiek@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/01 06:53:03 by ggrzesiek         #+#    #+#             */
+/*   Updated: 2026/04/01 06:54:38 by ggrzesiek        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_SHLVL = 0;
+int	g_shlvl = 0;
 
-int main(int argc, char **argv, char **envp)
+static void	process_line(t_shell *shell, char *line)
 {
-  t_shell shell;
-  char *line;
+	t_token	*tokens;
+	t_cmd	*cmds;
 
-  shell.argc = argc;
+	add_history(line);
+	tokens = tokenizer(line);
+	cmds = parse_tokens(tokens);
+	execute_command(shell, cmds);
+	free_cmds(cmds);
+	free_tokens(tokens);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell	shell;
+	char	*line;
+
+	shell.argc = argc;
 	shell.argv = argv;
-
-  init_shell(&shell, envp);
-  setup_signals();
-
-  while (1)
-  {
-    line = readline("mini(s)hell> ");
-
-    if(!line) // Ctrl+D
-      end(&shell, NULL);
-
-    if(*line)
-    {
-      add_history(line);
-
-      // t_cmd *cmd = init_single_cmd(&shell, line);
-      t_token *tokens = tokenizer(line);
-
-      t_cmd *cmds = parse_tokens(tokens);
-
-      // t_token *temp = tokens;
-      t_cmd *curr_cmd = cmds;
-      int cmd_idx = 1;
-      while (curr_cmd)
-      {
-        printf("Komenda %d \n",cmd_idx++);
-        if(curr_cmd->args)
-        {
-          for (int i =0; curr_cmd->args[i]; i++)
-            printf("Arg[%d]: %s\n",i , curr_cmd->args[i]);
-        }
-
-        t_redir *r = curr_cmd->redirs;
-        while(r)
-        {
-          printf("redir: type=%d, file=%s\n",r->type,r->file);
-          r = r->next;
-        }
-        curr_cmd = curr_cmd->next;
-        // printf("Token: Type=%d, Value=[%s]\n", temp->type, temp->value);
-        // temp = temp->next;
-      }
-      // execute_command(&shell, cmd);
-      // free_split(cmd->args);
-      // free(cmd);
-      free_cmds(cmds);
-      free_tokens(tokens);
-      free(line);
-    }
-  }
+	init_shell(&shell, envp);
+	setup_signals();
+	while (1)
+	{
+		line = readline("mini(s)hell> ");
+		if (!line)
+			end(&shell, NULL);
+		if (*line)
+			process_line(&shell, line);
+		free(line);
+	}
 }
