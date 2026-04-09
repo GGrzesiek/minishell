@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggrzesiek <ggrzesiek@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/11 13:13:13 by emilka            #+#    #+#             */
-/*   Updated: 2026/03/11 13:13:24 by emilka           ###   ########.fr       */
+/*   Created: 2026/04/01 06:52:45 by ggrzesiek         #+#    #+#             */
+/*   Updated: 2026/04/01 06:55:12 by ggrzesiek        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,69 +18,51 @@ int	is_redir_token(t_token_type type)
 		|| type == TOKEN_REDIR_APPEND || type == TOKEN_REDIR_HEREDOC);
 }
 
-static void	expand_all_tokens(t_shell *shell, t_token *tokens)
+static t_cmd	*handle_pipe(t_cmd **head)
 {
-	t_token	*tmp;
-	char	*expanded;
+	t_cmd	*cmd;
 
-	tmp = tokens;
-	while (tmp)
+	cmd = init_cmd();
+	if (!cmd)
+		return (NULL);
+	cmd_add_back(head, cmd);
+	return (cmd);
+}
+
+static t_token	*handle_redir(t_cmd *curr, t_token *tmp)
+{
+	if (tmp->next && tmp->next->type == TOKEN_WORD)
 	{
-		if (tmp->type == TOKEN_WORD)
-		{
-			expanded = expand_token(shell, tmp->value);
-			free(tmp->value);
-			tmp->value = expanded;
-		}
-		tmp = tmp->next;
+		redir_add_back(&curr->redirs, new_redir(tmp->type,
+				tmp->next->value));
+		return (tmp->next);
 	}
+	printf("syntax error");
+	return (tmp);
 }
 
-static void	handle_redir(t_cmd *curr, t_token **tmp)
-{
-	t_redir	*new_node;
-
-	if ((*tmp)->next && (*tmp)->next->type == TOKEN_WORD)
-	{
-		new_node = new_redir((*tmp)->type, (*tmp)->next->value);
-		redir_add_back(&curr->redirs, new_node);
-		*tmp = (*tmp)->next;
-	}
-	else
-		printf("syntax error");
-}
-
-static int	handle_pipe(t_cmd **head, t_cmd **curr)
-{
-	*curr = init_cmd();
-	if (!*curr)
-		return (0);
-	cmd_add_back(head, *curr);
-	return (1);
-}
-
-t_cmd	*parse_tokens(t_shell *shell, t_token *tokens)
+t_cmd	*parse_tokens(t_token *tokens)
 {
 	t_cmd	*head;
 	t_cmd	*curr;
 	t_token	*tmp;
 
-	expand_all_tokens(shell, tokens);
 	head = NULL;
-	if (!handle_pipe(&head, &curr))
+	curr = init_cmd();
+	if (!curr)
 		return (NULL);
+	cmd_add_back(&head, curr);
 	tmp = tokens;
 	while (tmp)
 	{
 		if (tmp->type == TOKEN_PIPE)
-		{
-			if (!handle_pipe(&head, &curr))
-				return (NULL);
-		}
+			curr = handle_pipe(&head);
 		else if (is_redir_token(tmp->type))
-			handle_redir(curr, &tmp);
+			tmp = handle_redir(curr, tmp);
 		else if (tmp->type == TOKEN_WORD)
 			add_arg(curr, tmp->value);
+		if (!curr)
+			return (NULL);
 		tmp = tmp->next;
 	}
 	return (head);

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggrzesiek <ggrzesiek@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/11 13:21:43 by emilka            #+#    #+#             */
-/*   Updated: 2026/03/11 13:21:59 by emilka           ###   ########.fr       */
+/*   Created: 2026/04/01 06:53:03 by ggrzesiek         #+#    #+#             */
+/*   Updated: 2026/04/01 06:54:38 by ggrzesiek        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile int	g_shlvl = 0;
+int	g_shlvl = 0;
 
 static void	process_line(t_shell *shell, char *line)
 {
@@ -21,8 +21,8 @@ static void	process_line(t_shell *shell, char *line)
 
 	add_history(line);
 	tokens = tokenizer(line);
-	cmds = parse_tokens(shell, tokens);
-	execute_cmd_chain(shell, cmds);
+	cmds = parse_tokens(tokens);
+	execute_command(shell, cmds);
 	free_cmds(cmds);
 	free_tokens(tokens);
 }
@@ -32,11 +32,10 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shell;
 	char	*line;
 
-	(void)argc;
-	(void)argv;
+	shell.argc = argc;
+	shell.argv = argv;
 	init_shell(&shell, envp);
-	setup_signals(&shell);
-	errno = 0;
+	setup_signals();
 	while (1)
 	{
 		line = readline("mini(s)hell> ");
@@ -46,5 +45,4 @@ int	main(int argc, char **argv, char **envp)
 			process_line(&shell, line);
 		free(line);
 	}
-	return (0);
 }

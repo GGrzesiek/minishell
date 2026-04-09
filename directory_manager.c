@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   directory_manager.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggrzesiek <ggrzesiek@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/01 06:52:36 by ggrzesiek         #+#    #+#             */
+/*   Created: 2026/04/01 06:53:23 by ggrzesiek         #+#    #+#             */
 /*   Updated: 2026/04/01 07:06:45 by ggrzesiek        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd	*init_single_cmd(t_shell *shell, char *line)
+/* bufered wrapper for getcwd*/
+char	*getcwdir(t_shell *shell)
 {
-	char	**args;
-	t_cmd	*new;
+	static char	buffer[PATH_MAX] = "";
 
-	args = ft_split(line, ' ');
-	new = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!args || !new)
-		end(shell, "single cmd init malloc error\n");
-	new->args = args;
-	return (new);
+	getcwd(buffer, sizeof(buffer));
+	if (!*buffer)
+		end(shell, "error getting cwd\n");
+	return (buffer);
+}
+
+void	change_directory(t_shell *shell, char *to)
+{
+	if (!to)
+	{
+		to = env_get(&shell->env_list, "HOME");
+		if (!to)
+			return ;
+	}
+	chdir(to);
 }

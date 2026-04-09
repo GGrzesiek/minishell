@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggrzesiek <ggrzesiek@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/17 12:34:47 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 12:34:48 by sandrzej         ###   ########.fr       */
+/*   Created: 2026/04/01 06:52:49 by ggrzesiek         #+#    #+#             */
+/*   Updated: 2026/04/01 07:06:45 by ggrzesiek        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ t_cmd	*init_cmd(void)
 	if (!cmd)
 		return (NULL);
 	cmd->args = NULL;
+	cmd->path = NULL;
 	cmd->redirs = NULL;
+	cmd->heredoc_fd = -1;
 	cmd->next = NULL;
 	return (cmd);
 }
