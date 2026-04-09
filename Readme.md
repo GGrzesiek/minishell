@@ -1,97 +1,67 @@
-# TODO
+*This project has been created as part of the 42 curriculum by gkryszcz and emurbane .*
 
-// we know
-printf, malloc, free, write, open, read, close, 
-kill, exit,
+# Minishell
 
-// pipex
-access, fork, execve, dup, dup2, pipe,
+## Description
+**Minishell** is a project in the 42 school curriculum focused on creating a simple shell inspired by Bash. The goal is to hande file descriptors, manage processes, have a working history and have basic Bash-like functionalities. It is a great way to learn C programming, memory management, and system architecture.
 
-// minitalk
-wait, waitpid, wait3, wait4, signal,
-sigaction, sigemptyset, sigaddset, 
+## Features
+Our shell successfully replicates the following core Bash functionalities:
+* **Prompt & History:** Displays a custom prompt and stores command history using the `readline` library.
+* **Execution:** Locates and executes programs using the `PATH` environment variable, as well as relative and absolute paths.
+* **Lexing & Parsing:** Correctly interprets spaces, words, and other symbols.
+* **Quotes:** * Single quotes (`'`) prevent the interpretation of meta-characters.
+  * Double quotes (`"`) prevent interpretation of meta-characters except for the dollar sign (`$`).
+* **Redirections:**
+  * `<` redirects input
+  * `>` redirects output 
+  * `>>` redirects output
+  * `<<`  reads input until a specified delimiter is seen
+* **Pipes (`|`):** Connects the output of one command to the input of the next using pipes.
+* **Environment Variables:** Expands `$VAR` to its corresponding value in the environment.
+* **Exit Status:** Expands `$?` to the exit status of the most recently executed pipeline.
+* **Signals:** Handles `Ctrl-C` (new prompt), `Ctrl-D` (exit), and `Ctrl-\` (ignored) identically to bash.
+* **Built-in Commands:**
+  * `echo` (with `-n` flag)
+  * `cd` (relative/absolute paths)
+  * `pwd`
+  * `export`
+  * `unset`
+  * `env`
+  * `exit`
 
-// command history
-readline, rl_clear_history, rl_on_new_line,
-rl_replace_line, rl_redisplay, add_history,
+## Instructions
 
-// directory management
-getcwd, chdir, 
+### Compilation
+The project uses a `Makefile` to compile the source code and the `libft` library.
+```bash
+# Clone the repository
+git clone <your_repository_url>
+cd minishell
 
-// file management
-stat, lstat, fstat, unlink, opendir, readdir, closedir, 
+# Compile the executable
+make
+./minishell
+# To clean up object files and the executable, you can use:
+make clean    # Removes object files
+make fclean   # Removes object files and the executable
+make re       # Recompiles the whole project
+```
+## Resources
+During the development of this project, the following references were used:
 
-// error management 
-strerror, perror, 
+GNU Bash Reference Manual: Used to understand the exact expected behavior of edge cases, quotes, and redirections.
 
-// session management
-isatty, ttyname, ttyslot, ioctl, 
-getenv, tcsetattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+Linux Programmer's Manual (man pages): Essential documentation for system calls (fork, execve, pipe, dup2, waitpid, stat, access).
 
-# Testing TODO
-- Return value of a process
-- Quotes
-- Environment variable parsing
+Readline Documentation: For handling the interactive prompt and history memory management.
 
-# Faza 1: Szkielet (Wspólnie - 1-2 dni)
-[v] Stworzenie repozytorium, Makefile i włączenie Libft.
-[v] Prosta pętla while(1) z readline.
-[v] Zdefiniowanie struktur danych w .h.
-[v] Obsługa sygnałów w pętli głównej (pusta obsługa, byle nie crashowało).
+## Use of AI
+Artificial Intelligence  was used throughout this project as a virtual tutor and code-assistant for some tasks, for example:
 
-# Faza 2: Podstawy (Praca równoległa - 3-5 dni)
-[V] Osoba A: Pisze tokenizer, który dzieli input po spacjach, ale ignoruje spacje w cudzysłowach.
-[v] Osoba B: Pisze prosty executor, który potrafi uruchomić jedną komendę (bez pipe'ów), np. /bin/ls. Implementuje szukanie w PATH.
-[v] Osoba B: Pisze prosty executor, który potrafi uruchomić jedną komendę (bez pipe'ów), np. /bin/ls. Implementuje szukanie w PATH.
+System Call Architecture: AI was used to explain the theoretical flow and synchronization between fork, pipe, and dup2 when building complex multi-pipe chains.
 
-# Faza 3: Integracja Logiki (Praca równoległa - 5-7 dni)
-[v] Osoba A: Implementuje obsługę $? (replace as errno) i zmiennych środowiskowych ($HOME itp.). 
-[v] Dodaje logikę export i unset.
-[v] Osoba B: Implementuje przekierowania proste (<, >). 
-[v] Implementuje cd (zmienia katalog roboczy procesu) i pwd.
+Norminette Compliance: AI assisted in refactoring large blocks of code to strictly stick to the 42 Norm
 
-# Faza 4: "The Heavy Lifting" (Najtrudniejszy etap - 5-7 dni)
-[v] Osoba A: Dopracowuje parser pod kątem dziwnych przypadków (np. echo "sdfsdf"'$USER' > plik). Przygotowuje listę komend dla potoków (linked list of commands).
-[v] Osoba B: Implementuje Pipes (|). 
-[v] Implementuje heredoc (<<).
 
-# Faza 5: Czyszczenie i Edge Cases (Wspólnie - 3-4 dni)
-[ ] Memory Leaks: valgrind --leak-check=full. Pamiętajcie, że readline może cieknąć (jest to dozwolone), ale wasz kod nie może.
-[v] Sygnały w procesach potomnych: Ctrl-C wewnątrz cat (blocking command) działa inaczej niż w prompcie. Tutaj przyda się ta jedna zmienna globalna.
-[vi] Testy: Porównujcie swoje wyniki z bash (nie zsh!). Sprawdźcie dziwne komendy, np. cat | cat | ls.
-
-# English Details
-- [v] Display a prompt when waiting for a new command.
-- [v] Have a working history.
-- [v] Search and launch the right executable (based on the PATH variable or using a
-relative or an absolute path).
-- [v] Use at most one global variable to indicate a received signal. Consider the
-implications: this approach ensures that your signal handler will not access your 'main data structures.
-- [ ] Handle ’ (single quote) which should prevent the shell from interpreting the meta-
-characters in the quoted sequence.
-- [ ] Handle " (double quote) which should prevent the shell from interpreting the meta-
-characters in the quoted sequence except for $ (dollar sign).
-- [ ] Implement the following redirections:
-◦ < should redirect input.
-◦ > should redirect output.
-◦ << should be given a delimiter, then read the input until a line containing the
-delimiter is seen. However, it doesn’t have to update the history!
-◦ >> should redirect output in append mode.
-- [v] Implement pipes (| character). The output of each command in the pipeline is
-connected to the input of the next command via a pipe.
-- [ ] Handle environment variables ($ followed by a sequence of characters) which
-should expand to their values.
-- [ ] Handle $? which should expand to the exit status of the most recently executed
-foreground pipeline.
-- [v] Handle ctrl-C, ctrl-D and ctrl-\ which should behave like in bash. In interactive mode:
-◦ ctrl-C displays a new prompt on a new line.
-◦ ctrl-D exits the shell.
-◦ ctrl-\ does nothing.
-- [v] Your shell must implement the following built-in commands:
-◦ echo with option -n
-◦ cd with only a relative or absolute path
-◦ pwd with no options
-◦ export with no options
-◦ unset with no options
-◦ env with no options or arguments
-◦ exit with no options
+Automated Testing: AI was used to generate comprehensive Bash test scripts that allowed us to pipe inputs into both our Minishell and the real Bash, using diff to compare the outputs and ensure 100% accuracy.
