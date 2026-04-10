@@ -1,75 +1,122 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ggrzesiek <ggrzesiek@student.42.fr>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/01 06:53:16 by ggrzesiek         #+#    #+#             */
-/*   Updated: 2026/04/01 07:06:45 by ggrzesiek        ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-extern int	g_shlvl;
+extern int g_SHLVL;
 
-int	is_builtin(char *name)
+static char *validate_as_is(t_shell *shell, char *name)
 {
-	return (ft_strncmp("exit", name, 5) == 0 || ft_strncmp("cd", name, 3) == 0
-		|| ft_strncmp("export", name, 7) == 0 || ft_strncmp("unset", name,
-			6) == 0 || ft_strncmp("env", name, 4) == 0 || ft_strncmp("echo",
-			name, 5) == 0 || ft_strncmp("pwd", name, 4) == 0);
+  char *path;
+
+  path = NULL;
+  if (access(name, X_OK) == 0)
+  {
+    path = ft_strdup(name);
+    if(!path)
+      end(shell, "command path malloc error\n");
+  }
+  return(path);
 }
 
-static void	scan_heredocs(t_shell *shell, t_cmd *cmd)
+static char *validate_in_paths(t_shell *shell, char *name)
 {
-	t_redir	*r;
+  char *path;
+  char **paths;
+  int j;
 
-	r = cmd->redirs;
-	while (r)
-	{
-		if (r->type == TOKEN_REDIR_HEREDOC)
-		{
-			if (cmd->heredoc_fd >= 0)
-				close(cmd->heredoc_fd);
-			cmd->heredoc_fd = handle_heredoc(shell, r->file);
-		}
-		r = r->next;
-	}
+  j = 0;
+  paths = shell->paths;
+  while (paths[j])
+  {
+    path = ft_strjoin(paths[j], name);
+    if(!path)
+      end(shell, "command full path malloc error\n");
+    if (access(path, X_OK) == 0)
+      break;
+    free(path);
+    path = NULL;
+    j++;
+  }
+  return(path);
 }
 
-static void	run_single_builtin(t_shell *shell, t_cmd *cmd)
+/*
+Finds the command in the current dir, or on the path, and initializes cmd->path for execution
+*/
+static void validate_command(t_shell *shell, t_cmd *cmd)
 {
-	int	saved_in;
-	int	saved_out;
+  char *path;
+  char *name;
 
-	scan_heredocs(shell, cmd);
-	saved_in = dup(STDIN_FILENO);
-	saved_out = dup(STDOUT_FILENO);
-	if (apply_redirections(shell, cmd) == 0)
-		dispatch_builtin(shell, cmd);
-	dup2(saved_in, STDIN_FILENO);
-	dup2(saved_out, STDOUT_FILENO);
-	close(saved_in);
-	close(saved_out);
-	if (cmd->heredoc_fd >= 0)
-	{
-		close(cmd->heredoc_fd);
-		cmd->heredoc_fd = -1;
-	}
+  path = NULL;
+  name = cmd->args[0];
+  if (ft_strlen(cmd->args[0]) >= 2 && 
+    ft_strncmp("./", cmd->args[0], 2) == 0)
+  {
+    path = validate_as_is(shell, name);
+  }
+  else if(ft_strlen(cmd->args[0]) >= 1 && 
+    ft_strncmp("/", cmd->args[0], 1) == 0)
+  {
+    path = validate_as_is(shell, name);
+  }
+  else
+  {
+    path = validate_in_paths(shell, name);
+  }
+  cmd->path=path;
 }
 
-void	execute_command(t_shell *shell, t_cmd *cmds)
+void execute_command(t_shell *shell, t_cmd *cmd)
 {
-	if (!cmds || !cmds->args || !cmds->args[0])
-		return ;
-	if (!cmds->next && is_builtin(cmds->args[0]))
-	{
-		run_single_builtin(shell, cmds);
-		return ;
-	}
-	g_shlvl++;
-	execute_pipeline(shell, cmds);
-	g_shlvl--;
+  char *name;
+  t_env *new_node;
+
+  name = cmd->args[0];
+  if(ft_strncmp("exit", name, 5) == 0)
+  {
+    end(shell, NULL);
+  }
+  else if (ft_strncmp("cd", name, 3) == 0)
+  {
+    change_directory(shell, cmd->args[1]);
+  }
+  else if (ft_strncmp("export", name, 7) == 0)
+  {
+    new_node = new_env_node(cmd->args[1]);
+    if (!new_node)
+      end(shell, "envp new node malloc error\n");
+		env_add_back(&shell->env_list, new_node);
+  }
+  else if (ft_strncmp("unset", name, 6) == 0)
+  {
+    if (ft_strncmp("PATH", cmd->args[1], 5) == 0)
+    {
+      free_split(shell->paths);
+      shell->paths = NULL;
+    }
+    env_del(&shell->env_list, cmd->args[1]);
+  }
+  else if (ft_strncmp("env", name, 4) == 0)
+  {
+    print_env(shell, &shell->env_list);
+  }
+  else
+  {
+    if (!shell->paths)
+      init_path(shell);
+    if (shell->paths)
+    {
+      validate_command(shell, cmd);
+      if(cmd->path)
+      {
+        g_SHLVL++; 
+        execute_native_command(shell, cmd);
+        g_SHLVL--;
+        free(cmd->path);
+      }
+      else
+        write_all(shell, STDOUT_FILENO, "Command not found\n");
+    }
+    else
+      write_all(shell, STDOUT_FILENO, "Command not found\n");
+  }
 }

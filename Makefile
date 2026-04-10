@@ -4,20 +4,15 @@ CFLAGS = -Wall -Wextra -Werror -g
 SRCS = \
 	main.c \
 	env_manager.c \
-	env_utils.c \
 	file_manager.c \
 	directory_manager.c \
 	mem_utils.c \
 	native_executor.c \
 	executor.c \
-	builtins.c \
-	pipe_utils.c \
-	pipeline.c \
 	init.c \
 	signals.c \
 	utils.c \
 	lexer.c \
-	lexer_utils.c \
 	parser.c \
 	parser_utils.c
 

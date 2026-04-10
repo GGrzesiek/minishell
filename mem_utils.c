@@ -1,36 +1,25 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   mem_utils.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ggrzesiek <ggrzesiek@student.42.fr>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/01 06:52:59 by ggrzesiek         #+#    #+#             */
-/*   Updated: 2026/04/01 07:06:45 by ggrzesiek        ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-void	end(t_shell *shell, char *msg)
+void end(t_shell *shell, char *msg)
 {
-	t_env	*lst;
-	t_env	*tmp;
+  t_env *lst;
+  t_env *tmp;
 
-	rl_clear_history();
-	lst = shell->env_list;
-	while (lst)
-	{
-		tmp = lst;
-		lst = lst->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
-	}
-	free_split(shell->paths);
-	if (msg)
-		write(STDERR_FILENO, msg, ft_strlen(msg));
-	exit(shell->exit_code);
+  // FREE ENV LIST
+  rl_clear_history();
+  lst = shell->env_list;
+  while (lst)
+  {
+    tmp = lst;
+    lst = lst->next;
+    free(tmp->key);
+    free(tmp->value);
+    free(tmp);
+  }
+  free_split(shell->paths);
+  if (msg)
+    write(STDERR_FILENO, msg, ft_strlen(msg));
+  exit(shell->exit_code);
 }
 
 void	free_split(char **sp)
@@ -49,47 +38,45 @@ void	free_split(char **sp)
 	}
 }
 
-void	free_tokens(t_token *head)
+void free_tokens(t_token *head)
 {
-	t_token	*tmp;
+  t_token *tmp;
 
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		free(tmp->value);
-		free(tmp);
-	}
+  while(head)
+  {
+    tmp = head;
+    head = head->next;
+    free(tmp->value);
+    free(tmp);
+  }
 }
-
-void	free_redirs(t_redir *head)
+void free_redirs(t_redir *head)
 {
-	t_redir	*tmp;
+    t_redir *tmp;
 
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		if (tmp->file)
-			free(tmp->file);
-		free(tmp);
-	}
+    while(head)
+    {
+      tmp= head;
+      head = head->next;
+      if(tmp->file)
+        free(tmp->file);
+      free(tmp);
+    }
 }
-
-void	free_cmds(t_cmd *head)
+void free_cmds(t_cmd *head)
 {
-	t_cmd	*tmp;
+  t_cmd *tmp;
 
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		if (tmp->args)
-			free_split(tmp->args);
-		if (tmp->path)
-			free(tmp->path);
-		if (tmp->redirs)
-			free_redirs(tmp->redirs);
-		free(tmp);
-	}
+  while(head)
+  {
+    tmp = head;
+    head = head->next;
+    if(tmp->args)
+      free_split(tmp->args);
+    if(tmp->path)
+      free(tmp->path);
+    if(tmp->redirs)
+      free_redirs(tmp->redirs);
+	free(tmp);
+  }
 }
