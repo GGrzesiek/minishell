@@ -43,6 +43,8 @@ void	execute_native_command(t_shell *shell, t_cmd *cmd)
 		end(shell, "fork failed\n");
 	else if (pid == 0)
 		run_child(shell, cmd);
+	else
+		shell->last_pid = pid;
 }
 
 int	is_directory(const char *path)

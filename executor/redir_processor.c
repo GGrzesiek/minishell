@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_processor.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggrzesiek <ggrzesiek@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 15:50:17 by sandrzej          #+#    #+#             */
-/*   Updated: 2026/03/11 13:46:34 by emilka           ###   ########.fr       */
+/*   Updated: 2026/04/13 09:11:09 by ggrzesiek        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,8 @@ static int	process_append(t_shell *shell, t_cmd *cmd, char *file)
 int	open_redir(t_shell *shell, t_cmd *cmd)
 {
 	t_redir	*redir;
-	int		r_code;
 	int		code;
 
-	r_code = 0;
 	code = 0;
 	redir = cmd->redirs;
 	while (redir)
@@ -100,9 +98,9 @@ int	open_redir(t_shell *shell, t_cmd *cmd)
 			code = process_out(shell, cmd, redir->file);
 		else if (redir->type == TOKEN_REDIR_APPEND)
 			code = process_append(shell, cmd, redir->file);
-		redir = redir->next;
 		if (code)
-			r_code = 1;
+			return (1);
+		redir = redir->next;
 	}
-	return (r_code);
+	return (0);
 }

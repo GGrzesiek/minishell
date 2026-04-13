@@ -12,6 +12,22 @@
 
 #include "./../minishell.h"
 
+static void	update_oldpwd(t_shell *shell)
+{
+	char	*old_pwd;
+	char	*key;
+	t_env	*new_node;
+
+	old_pwd = env_get(&shell->env_list, "PWD");
+	if (!old_pwd)
+		return ;
+	key = ft_strjoin("OLDPWD=", old_pwd);
+	new_node = new_env_node(key);
+	free(key);
+	if (new_node)
+		env_add_back(&shell->env_list, new_node);
+}
+
 /* bufered wrapper for getcwd */
 static char	*getcwdir(t_shell *shell)
 {
@@ -41,6 +57,7 @@ int	change_directory(t_shell *shell, t_cmd *cmd)
 		if (cmd->args[2])
 			return (shperror(cmd->args[0], " too many arguments"), 1);
 	}
+	update_oldpwd(shell);
 	if (chdir(to) == -1)
 		return (perror(cmd->args[0]), 1);
 	key = ft_strjoin("PWD=", getcwdir(shell));
@@ -80,6 +97,7 @@ int	pwd(t_shell *shell, t_cmd *cmd)
 		run_child(shell, cmd);
 	else
 	{
+		shell->last_pid = pid;
 		if (cmd->fdout != STDOUT_FILENO)
 			close(cmd->fdout);
 	}

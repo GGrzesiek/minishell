@@ -12,22 +12,49 @@
 
 #include "./../minishell.h"
 
+static int	valid_identifier(char *s)
+{
+	int	i;
+
+	if (!s || (!ft_isalpha(s[0]) && s[0] != '_'))
+		return (0);
+	i = 1;
+	while (s[i] && s[i] != '=')
+	{
+		if (!ft_isalnum(s[i]) && s[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	export(t_shell *shell, t_cmd *cmd)
 {
 	t_env	*new_node;
-	char	*key;
+	int		i;
+	int		ret;
 
-	key = cmd->args[1];
-	if (key)
+	if (!cmd->args[1])
+		return (print_sorted_declare_env(shell, cmd), 0);
+	i = 1;
+	ret = 0;
+	while (cmd->args[i])
 	{
-		new_node = new_env_node(key);
-		if (!new_node)
-			end(shell, "envp new node malloc error\n");
-		return (env_add_back(&shell->env_list, new_node));
+		if (!valid_identifier(cmd->args[i]))
+		{
+			shperror("minishell: export", " not a valid identifier");
+			ret = 1;
+		}
+		else
+		{
+			new_node = new_env_node(cmd->args[i]);
+			if (!new_node)
+				end(shell, "envp new node malloc error\n");
+			env_add_back(&shell->env_list, new_node);
+		}
+		i++;
 	}
-	else
-		print_sorted_declare_env(shell, cmd);
-	return (0);
+	return (ret);
 }
 
 int	unset(t_shell *shell, t_cmd *cmd)
