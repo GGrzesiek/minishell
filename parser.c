@@ -22,15 +22,26 @@ static void	expand_all_tokens(t_shell *shell, t_token *tokens)
 {
 	t_token	*tmp;
 	char	*expanded;
+	char	*orig;
+	int		is_var;
 
 	tmp = tokens;
 	while (tmp)
 	{
 		if (tmp->type == TOKEN_WORD)
 		{
-			expanded = expand_token(shell, tmp->value);
-			free(tmp->value);
-			tmp->value = expanded;
+			orig = tmp->value;
+			is_var = (orig[0] == '$' && !ft_strchr(orig, '\'')
+				&& !ft_strchr(orig, '"'));
+			expanded = expand_token(shell, orig);
+			free(orig);
+			if (is_var && !expanded[0])
+			{
+				free(expanded);
+				tmp->value = NULL;
+			}
+			else
+				tmp->value = expanded;
 		}
 		tmp = tmp->next;
 	}
@@ -79,7 +90,7 @@ t_cmd	*parse_tokens(t_shell *shell, t_token *tokens)
 		}
 		else if (is_redir_token(tmp->type))
 			handle_redir(curr, &tmp);
-		else if (tmp->type == TOKEN_WORD)
+		else if (tmp->type == TOKEN_WORD && tmp->value)
 			add_arg(curr, tmp->value);
 		tmp = tmp->next;
 	}

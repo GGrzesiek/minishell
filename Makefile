@@ -11,6 +11,7 @@ SRCS = \
 	executor/native_executor.c \
 	executor/executor.c \
 	executor/redir_processor.c \
+	executor/redir_validator.c \
 	executor/export_sorter.c \
 	env_manager.c \
 	mem_utils.c \

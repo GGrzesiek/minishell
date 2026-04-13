@@ -19,7 +19,7 @@ int	ft_isnumber(char *str)
 	if (!str || !*str)
 		return (0);
 	i = 0;
-	if (str[i] == '-')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	if (!str[i])
 		return (0);

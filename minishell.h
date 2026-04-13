@@ -83,6 +83,7 @@ typedef struct s_shell
 	t_env			*env_list;
 	char			**paths;
 	int				exit_code;
+	pid_t			last_pid;
 	t_cmd			*cmds;
 }					t_shell;
 
@@ -103,6 +104,8 @@ int					process_native_command(t_shell *shell, t_cmd *cmd);
 
 /* Piping */
 int					open_redir(t_shell *shell, t_cmd *cmd);
+int					run_cmd(t_shell *shell, t_cmd *cmd);
+int					execute_command(t_shell *shell, t_cmd *cmd);
 void				write_all(t_shell *shell, int fd, char *content);
 char				*read_all(t_shell *shell, int fd);
 

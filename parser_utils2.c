@@ -69,6 +69,8 @@ static char	*handle_dollar(t_shell *shell, char *str, int *i, char *res)
 		tmp = ft_substr(str, start, *i - start);
 		res = append_str(res, env_get(&shell->env_list, tmp));
 	}
+	else if (ft_isdigit(str[*i]))
+		return ((*i)++, res);
 	else
 		return (append_char(res, '$'));
 	free(tmp);

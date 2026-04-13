@@ -44,7 +44,7 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 	else if (ft_strncmp("pwd", name, 4) == 0)
 		return (pwd(shell, cmd));
 	else if (ft_strncmp("export", name, 7) == 0)
-		return (export(shell, cmd));
+		return (cmd->next && cmd->args[1] ? 0 : export(shell, cmd));
 	else if (ft_strncmp("unset", name, 6) == 0)
 		return (unset(shell, cmd));
 	else if (ft_strncmp("env", name, 4) == 0)
@@ -55,17 +55,23 @@ int	execute_command(t_shell *shell, t_cmd *cmd)
 		return (process_native_command(shell, cmd));
 }
 
-static void	execute_loop(t_shell *shell, t_cmd *cmd)
+static int	execute_loop(t_shell *shell, t_cmd *cmd)
 {
+	int	last_redir_fail;
+
+	last_redir_fail = 0;
 	while (1)
 	{
 		cmd->fdout = STDOUT_FILENO;
 		if (cmd->next)
 			open_pipe(shell, cmd);
-		if (open_redir(shell, cmd) && !shell->exit_code)
+		if (run_cmd(shell, cmd))
+		{
 			shell->exit_code = 1;
-		if ((!cmd->args || execute_command(shell, cmd)) && !shell->exit_code)
-			shell->exit_code = 1;
+			last_redir_fail = (!cmd->next);
+		}
+		else
+			last_redir_fail = 0;
 		if (cmd->fdin != STDIN_FILENO)
 			close(cmd->fdin);
 		if (cmd->fdout != STDOUT_FILENO)
@@ -74,25 +80,35 @@ static void	execute_loop(t_shell *shell, t_cmd *cmd)
 			break ;
 		cmd = cmd->next;
 	}
+	return (last_redir_fail);
 }
 
 static void	wait_children(t_shell *shell)
 {
-	int	status;
+	int		status;
+	pid_t	pid;
 
-	while (wait(&status) > 0)
+	while ((pid = wait(&status)) > 0)
 	{
+		if (pid != shell->last_pid)
+			continue ;
 		if (WIFEXITED(status))
 			shell->exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			shell->exit_code = 128 + WTERMSIG(status);
 	}
 }
 
 int	execute_cmd_chain(t_shell *shell, t_cmd *cmd)
 {
+	int	last_redir_fail;
+
 	cmd->fdin = STDIN_FILENO;
 	g_shlvl++;
-	execute_loop(shell, cmd);
+	last_redir_fail = execute_loop(shell, cmd);
 	wait_children(shell);
+	if (last_redir_fail)
+		shell->exit_code = 1;
 	g_shlvl--;
 	return (0);
 }

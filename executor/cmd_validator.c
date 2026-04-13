@@ -93,10 +93,20 @@ int	validate_command(t_shell *shell, t_cmd *cmd)
 	char	*name;
 
 	name = cmd->args[0];
-	if (ft_strncmp("./", name, 2) == 0)
-		path = validate_with_env(shell, cmd, "PWD");
-	else if (ft_strncmp("~/", name, 2) == 0)
-		path = validate_with_env(shell, cmd, "HOME");
+	if (ft_strncmp("./", name, 2) == 0 || ft_strncmp("~/", name, 2) == 0)
+	{
+		if (ft_strncmp("./", name, 2) == 0)
+			path = validate_with_env(shell, cmd, "PWD");
+		else
+			path = validate_with_env(shell, cmd, "HOME");
+		if (!path || access(path, F_OK) == -1)
+		{
+			free(path);
+			shperror(name, "No such file or directory");
+			shell->exit_code = 127;
+			return (1);
+		}
+	}
 	else if (ft_strncmp("/", name, 1) == 0)
 		path = validate_as_is(shell, name);
 	else

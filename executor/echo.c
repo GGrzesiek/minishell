@@ -61,6 +61,7 @@ int	recho(t_shell *shell, t_cmd *cmd)
 	}
 	else
 	{
+		shell->last_pid = pid;
 		if (cmd->fdout != STDOUT_FILENO)
 			close(cmd->fdout);
 	}
@@ -77,11 +78,13 @@ int	process_end(t_shell *shell, t_cmd *cmd)
 		if (cmd->args[2])
 			return (shperror(cmd->args[0], " too many arguments"), 1);
 		if (ft_isnumber(exit_code))
-		{
-			shell->exit_code = ft_atoi(exit_code);
-		}
+			shell->exit_code = ft_atoi(exit_code) % 256;
 		else
-			return (shperror(cmd->args[0], " numeric argument required"), 1);
+		{
+			shperror(cmd->args[0], " numeric argument required");
+			shell->exit_code = 2;
+			end(shell, NULL);
+		}
 	}
 	end(shell, NULL);
 	return (0);

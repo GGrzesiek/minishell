@@ -62,8 +62,10 @@ void	init_shell(t_shell *shell, char **envp)
 {
 	shell->envp = envp;
 	shell->exit_code = 0;
+	shell->last_pid = 0;
 	shell->cmds = NULL;
 	shell->paths = NULL;
+	rl_bind_key('\t', rl_insert);
 	init_env_list(shell, envp);
 	init_path(shell);
 }
