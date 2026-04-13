@@ -6,7 +6,7 @@
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:37:49 by sandrzej          #+#    #+#             */
-/*   Updated: 2026/03/11 13:43:20 by emilka           ###   ########.fr       */
+/*   Updated: 2026/04/13 11:33:21 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ static int	execute_loop(t_shell *shell, t_cmd *cmd)
 			open_pipe(shell, cmd);
 		if (run_cmd(shell, cmd))
 		{
-			shell->exit_code = 1;
+			if (shell->exit_code == 0)
+				shell->exit_code = 1;
 			last_redir_fail = (!cmd->next);
 		}
 		else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sandrzej <sandrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/17 12:33:51 by sandrzej          #+#    #+#             */
-/*   Updated: 2025/12/17 12:33:53 by sandrzej         ###   ########.fr       */
+/*   Created: 2026/04/13 10:49:46 by emilka            #+#    #+#             */
+/*   Updated: 2026/04/13 10:51:26 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,28 @@ t_env	*new_env_node(char *str)
 	return (node);
 }
 
-static int	add_back(t_env *curr, t_env *prev, size_t len, t_env *new_node)
+static int	replace_env(t_env **head, t_env *new_n, size_t len)
 {
+	t_env	*curr;
+	t_env	*prev;
+
+	curr = *head;
+	prev = NULL;
 	while (curr)
 	{
-		if (ft_strncmp(curr->key, new_node->key, len + 1) == 0)
+		if (ft_strncmp(curr->key, new_n->key, len + 1) == 0)
 		{
 			if (prev)
-				prev->next = new_node;
-			new_node->next = curr->next;
+				prev->next = new_n;
+			else
+				*head = new_n;
+			new_n->next = curr->next;
 			return (free_env(curr), 1);
 		}
 		prev = curr;
 		curr = curr->next;
 	}
-	return (prev->next = new_node, 0);
+	return (prev->next = new_n, 0);
 }
 
 int	env_add_back(t_env **head, t_env *new_node)
@@ -60,7 +67,7 @@ int	env_add_back(t_env **head, t_env *new_node)
 		return (free_env(new_node), 1);
 	if (!*head)
 		return (*head = new_node, 0);
-	add_back(*head, NULL, ft_strlen(new_node->key), new_node);
+	replace_env(head, new_node, ft_strlen(new_node->key));
 	return (0);
 }
 

@@ -11,6 +11,7 @@ static void run_child(t_shell *shell, t_cmd *cmd)
 void execute_native_command(t_shell *shell, t_cmd *cmd)
 {
   int pid;
+  int status;
   
   pid = fork();
   if (pid < 0)
@@ -18,5 +19,11 @@ void execute_native_command(t_shell *shell, t_cmd *cmd)
   else if (pid == 0)
     run_child(shell, cmd);
   else 
-    wait(0);
+  {
+    waitpid(pid, &status, 0);
+    if (WIFEXITED(status))
+      shell->exit_code = WEXITSTATUS(status);
+    else
+      shell->exit_code = 1;
+  }
 }

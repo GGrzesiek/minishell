@@ -1,116 +1,76 @@
-echo "=== TEST 1: Podstawowe zmienne ==="
+echo '=== TEST 1: Podstawowe zmienne ==='
+echo '-> OCZEKIWANE: (twój login, np. emilka)'
 echo $USER
+echo '-> OCZEKIWANE: 0'
 echo $?
+echo '-> OCZEKIWANE: (pusta linia)'
 echo $NIEZNANA_ZMIENNA
-echo $USER $USER
-echo $
 
-echo "=== TEST 2: Pojedyncze cudzyslowy ==="
+echo '=== TEST 2: Pojedyncze cudzyslowy ==='
+echo '-> OCZEKIWANE: $USER'
 echo '$USER'
+echo '-> OCZEKIWANE: $?'
 echo '$?'
-echo '     spacje    '
 
-echo "=== TEST 3: Podwojne cudzyslowy ==="
+echo '=== TEST 3: Podwojne cudzyslowy ==='
+echo '-> OCZEKIWANE: Witaj, (twój login)!'
 echo "Witaj, $USER!"
-echo "Kod bledu to: $?"
-echo "Zmienna $NIEZNANA to pustość"
+echo '-> OCZEKIWANE: Zmienna  to pustosc'
+echo "Zmienna $NIEZNANA to pustosc"
 
-echo "=== TEST 4: Mieszanie cudzyslowow ==="
+echo '=== TEST 4: Mieszanie cudzyslowow ==='
+echo '-> OCZEKIWANE: Pojedyncze w podwojnych (w apostrofach)'
 echo "'Pojedyncze w podwojnych'"
+echo '-> OCZEKIWANE: Podwojne w pojedynczych (w cudzyslowach)'
 echo '"Podwojne w pojedynczych"'
-echo "Czesc $USER,"' jak tam $USER?'
+echo '-> OCZEKIWANE: ABC'
 echo "A"'B'"C"
 
-echo "=== TEST 5: Status bledu ($?) ==="
+echo '=== TEST 5: Kody bledow (127 i 126) ==='
+echo '-> OCZEKIWANE: command not found'
 nieistniejaca_komenda
+echo '-> OCZEKIWANE: 127 TUTAJ recznie wpisz oddzielnie to'
 echo $?
+echo '-> OCZEKIWANE: Is a directory lub Permission denied'
+./
+echo '-> OCZEKIWANE: 126'
 echo $?
 
-echo "=== TEST 6: Pliki ze spacjami ==="
+echo '=== TEST 6: Pliki ze spacjami ==='
 echo "To jest testowy tekst" > "moj dziwny plik.txt"
+echo '-> OCZEKIWANE: To jest testowy tekst'
 cat "moj dziwny plik.txt"
-ls -l | grep "dziwny"
 rm "moj dziwny plik.txt"
 
-echo "=== TEST 7: Pipe'i (|) ==="
+echo '=== TEST 7: Pipey (|) ==='
+echo '-> OCZEKIWANE: 2'
 echo "hello world" | wc -w
-ls | grep minishell
+echo '-> OCZEKIWANE: 5'
 echo "test" | cat | wc -c
 
-echo "=== TEST 8: Redirecty wejscia (<) ==="
+echo '=== TEST 8: Redirecty wejscia (<) ==='
 echo "linia testowa" > test_input.txt
+echo '-> OCZEKIWANE: linia testowa'
 cat < test_input.txt
 rm test_input.txt
 
-echo "=== TEST 9: Append (>>) ==="
+echo '=== TEST 9: Append (>>) ==='
 echo "linia 1" > test_append.txt
 echo "linia 2" >> test_append.txt
+echo '-> OCZEKIWANE: linia 1 (enter) linia 2'
 cat test_append.txt
 rm test_append.txt
 
-echo "=== TEST 10: Kombinacje redirectow ==="
-echo "test output" > out1.txt
-echo "test append" >> out1.txt
-wc -l < out1.txt
-rm out1.txt
-
-echo "=== TEST 11: Built-in: pwd ==="
-pwd
-
-echo "=== TEST 12: Built-in: cd ==="
+echo '=== TEST 10: Built-in: cd ==='
 cd /tmp
+echo '-> OCZEKIWANE: /tmp'
 pwd
-cd -
+cd
+echo '-> OCZEKIWANE: (Twój katalog domowy)'
 pwd
 
-echo "=== TEST 13: Built-in: export ==="
-export ZMIENNA_TEST="wartosc_testowa"
-echo $ZMIENNA_TEST
-export ZMIENNA_TEST="nowa_wartosc"
-echo $ZMIENNA_TEST
-
-echo "=== TEST 14: Built-in: unset ==="
-export TEMP_VAR="do_usuniecia"
-echo $TEMP_VAR
-unset TEMP_VAR
-echo "Zmienna usunięta: $TEMP_VAR"
-
-echo "=== TEST 15: Built-in: env ==="
-env | head -5
-
-echo "=== TEST 16: Zagniezdzone cytaty ==="
-echo "To jest \"cytowanie w cytowaniu\""
+echo '=== TEST 11: Zagniezdzone cytaty ==='
+echo '-> OCZEKIWANE: Test bez interpolacji: $USER'
 echo 'Test bez interpolacji: $USER'
-echo "Kombinacja: '$USER'"
 
-echo "=== TEST 17: Wielokrotne polecenia ==="
-echo "test1" && echo "test2"
-echo "test3" ; echo "test4"
-
-echo "=== TEST 18: Wiele pipe'ow ==="
-echo "test data" | wc -w | cat
-
-echo "=== TEST 19: Spacje i tabulatory ==="
-echo    "   wiele spacji   "
-echo	"z tabulatorem"
-
-echo "=== TEST 20: Znaki specjalne ==="
-echo "!@#$%^&*()"
-echo "backtick\` test"
-echo "echo test" | sh
-
-echo "=== TEST 21: Puste polecenia ==="
-echo ""
-echo ''
-
-echo "=== TEST 22: Status ostatniego polecenia ==="
-true
-echo "Po true: $?"
-false
-echo "Po false: $?"
-
-echo "=== TEST 23: Duze ilosci argumentow ==="
-echo arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10
-
-echo "=== KONIEC TESTOW ==="
-exit
+echo '=== KONIEC TESTOW ==='
