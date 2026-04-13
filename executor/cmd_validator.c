@@ -5,26 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/11 13:37:01 by emilka            #+#    #+#             */
-/*   Updated: 2026/03/11 13:37:12 by emilka           ###   ########.fr       */
+/*   Created: 2026/04/13 12:12:45 by emilka            #+#    #+#             */
+/*   Updated: 2026/04/13 12:12:46 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
-
-static char	*validate_as_is(t_shell *shell, char *name)
-{
-	char	*path;
-
-	path = NULL;
-	if (access(name, F_OK) == 0)
-	{
-		path = ft_strdup(name);
-		if (!path)
-			end(shell, "command path malloc error\n");
-	}
-	return (path);
-}
 
 static char	*validate_with_env(t_shell *shell, t_cmd *cmd, char *env_var)
 {
@@ -36,38 +22,55 @@ static char	*validate_with_env(t_shell *shell, t_cmd *cmd, char *env_var)
 	part = ft_substr(cmd->args[0], 1, ft_strlen(cmd->args[0]));
 	path = ft_strjoin(base_dir, part);
 	free(part);
+	if (!path || access(path, F_OK) == -1)
+	{
+		if (path)
+			free(path);
+		return (NULL);
+	}
 	return (path);
 }
 
 static char	*validate_in_paths(t_shell *shell, char *name)
 {
 	char	*path;
-	char	**paths;
 	int		j;
 
-	j = 0;
-	path = NULL;
-	paths = shell->paths;
-	if (paths)
+	if (name[0] == '/')
 	{
-		while (paths[j])
-		{
-			path = ft_strjoin(paths[j], name);
-			if (!path)
-				end(shell, "command full path malloc error\n");
-			if (access(path, F_OK) == 0)
-				break ;
-			free(path);
-			path = NULL;
-			j++;
-		}
+		if (access(name, F_OK) == -1)
+			return (NULL);
+		path = ft_strdup(name);
+		if (!path)
+			end(shell, "malloc error\n");
+		return (path);
 	}
-	else
-		path = validate_as_is(shell, name);
-	return (path);
+	j = -1;
+	while (shell->paths && shell->paths[++j])
+	{
+		path = ft_strjoin(shell->paths[j], name);
+		if (!path)
+			end(shell, "malloc error\n");
+		if (access(path, F_OK) == 0)
+			return (path);
+		free(path);
+	}
+	if (!shell->paths && access(name, F_OK) == 0)
+		return (ft_strdup(name));
+	return (NULL);
 }
 
-int	validate_access(t_cmd *cmd, char *path)
+static int	handle_not_found(t_shell *shell, char *name)
+{
+	if (name[0] == '.' || name[0] == '/' || name[0] == '~')
+		shperror(name, "No such file or directory");
+	else
+		shperror(name, "command not found");
+	shell->exit_code = 127;
+	return (1);
+}
+
+static int	validate_access(t_shell *shell, t_cmd *cmd, char *path)
 {
 	struct stat	path_stat;
 
@@ -76,12 +79,14 @@ int	validate_access(t_cmd *cmd, char *path)
 	{
 		free(cmd->path);
 		shperror(cmd->args[0], "Is a directory");
+		shell->exit_code = 126;
 		return (1);
 	}
 	if (access(cmd->path, X_OK) == -1)
 	{
 		free(cmd->path);
 		shperror(cmd->args[0], "Permission denied");
+		shell->exit_code = 126;
 		return (1);
 	}
 	return (0);
@@ -93,35 +98,14 @@ int	validate_command(t_shell *shell, t_cmd *cmd)
 	char	*name;
 
 	name = cmd->args[0];
-	if (ft_strncmp("./", name, 2) == 0 || ft_strncmp("~/", name, 2) == 0)
-	{
-		if (ft_strncmp("./", name, 2) == 0)
-			path = validate_with_env(shell, cmd, "PWD");
-		else
-			path = validate_with_env(shell, cmd, "HOME");
-		if (!path || access(path, F_OK) == -1)
-		{
-			free(path);
-			shperror(name, "No such file or directory");
-			shell->exit_code = 127;
-			return (1);
-		}
-	}
-	else if (ft_strncmp("/", name, 1) == 0)
-		path = validate_as_is(shell, name);
+	if (ft_strncmp("./", name, 2) == 0)
+		path = validate_with_env(shell, cmd, "PWD");
+	else if (ft_strncmp("~/", name, 2) == 0)
+		path = validate_with_env(shell, cmd, "HOME");
 	else
 		path = validate_in_paths(shell, name);
 	cmd->path = path;
 	if (!path)
-	{
-		shperror(cmd->args[0], "command not found");
-		shell->exit_code = 127;
-		return (1);
-	}
-	if (validate_access(cmd, path))
-	{
-		shell->exit_code = 126;
-		return (1);
-	}
-	return (0);
+		return (handle_not_found(shell, name));
+	return (validate_access(shell, cmd, path));
 }

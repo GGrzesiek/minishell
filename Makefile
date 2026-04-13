@@ -4,6 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 MAIN = main.c
 SRCS = \
 	executor/echo.c \
+	executor/builtin_cmd.c \
 	executor/cmd_validator.c \
 	executor/env_executor.c \
 	executor/file_manager.c \

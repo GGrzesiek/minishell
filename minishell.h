@@ -6,7 +6,7 @@
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:34:33 by sandrzej          #+#    #+#             */
-/*   Updated: 2026/03/11 13:34:47 by emilka           ###   ########.fr       */
+/*   Updated: 2026/04/13 12:05:34 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void				free_tokens(t_token *head);
 int					execute_cmd_chain(t_shell *shell, t_cmd *cmd);
 int					validate_command(t_shell *shell, t_cmd *cmd);
 int					process_native_command(t_shell *shell, t_cmd *cmd);
+int					execute_builtin(t_shell *shell, t_cmd *cmd, char *name);
 
 /* Piping */
 int					open_redir(t_shell *shell, t_cmd *cmd);
@@ -108,6 +109,8 @@ int					run_cmd(t_shell *shell, t_cmd *cmd);
 int					execute_command(t_shell *shell, t_cmd *cmd);
 void				write_all(t_shell *shell, int fd, char *content);
 char				*read_all(t_shell *shell, int fd);
+void				execute_native_path(t_shell *shell, t_cmd *cmd);
+void				unset_env(t_shell *shell, char *arg);
 
 /* Built-ins */
 int					change_directory(t_shell *shell, t_cmd *cmd);

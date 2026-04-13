@@ -6,7 +6,7 @@
 /*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 13:13:13 by emilka            #+#    #+#             */
-/*   Updated: 2026/03/11 13:13:24 by emilka           ###   ########.fr       */
+/*   Updated: 2026/04/13 12:02:07 by emilka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	expand_all_tokens(t_shell *shell, t_token *tokens)
 		{
 			orig = tmp->value;
 			is_var = (orig[0] == '$' && !ft_strchr(orig, '\'')
-				&& !ft_strchr(orig, '"'));
+					&& !ft_strchr(orig, '"'));
 			expanded = expand_token(shell, orig);
 			free(orig);
 			if (is_var && !expanded[0])
