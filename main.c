@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emilka <emilka@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggrzesiek <ggrzesiek@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 13:21:43 by emilka            #+#    #+#             */
-/*   Updated: 2026/03/11 13:21:59 by emilka           ###   ########.fr       */
+/*   Updated: 2026/05/12 16:26:27 by ggrzesiek        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int argc, char **argv, char **envp)
 	errno = 0;
 	while (1)
 	{
-		line = readline("mini(s)hell> ");
+		line = readline("minishell> ");
 		if (!line)
 			end(&shell, NULL);
 		if (*line)
